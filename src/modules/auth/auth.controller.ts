@@ -19,7 +19,5 @@ export class AuthController {
     if (res.error) return { ...res, status: HttpStatus.UNAUTHORIZED };
 
     return { payload: res, success: 'ok' };
-    // if (res.length > 0) return { ...res };
-    // return { error: 'No registros' };
   }
 }
