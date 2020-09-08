@@ -1,8 +1,9 @@
-import { Entity, PrimaryGeneratedColumn, Column, Index } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, Index, BeforeInsert } from "typeorm";
 import { States } from "./enums/states.enum";
+import { encrypto } from 'pass-encrypto';
 
 @Entity("user")
-@Index(["key"], { unique: true })
+@Index(["key", "username"], { unique: true })
 export class User {
 
   @PrimaryGeneratedColumn("uuid")
@@ -15,7 +16,7 @@ export class User {
   username: string;
 
   @Column("character varying", {
-    length: 50,
+    length: 250,
     nullable: false
   })
   password: string;
@@ -29,4 +30,10 @@ export class User {
     nullable: false
   })
   state: States
+
+  @BeforeInsert()
+  hashPassword() {
+    console.log(encrypto(this.password))
+    this.password = encrypto(this.password);
+  }
 }
