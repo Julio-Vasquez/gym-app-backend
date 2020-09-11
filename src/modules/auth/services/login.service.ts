@@ -28,7 +28,6 @@ export class LoginService {
     if (!response) return { error: 'NO_EXISTS_ACCOUNT', detail: 'No existe ninguna cuenta con estas credenciales!.' };
     else if (response.state === 'inactive') return { error: 'INACTIVE_ACCOUNT', detail: 'Cuenta inactiva!.' };
     else if (!ComparePassword(password, response.password)) return { error: 'NO_MATCH_PASSWORD', detail: 'No coincide la contraseña' };
-    else return { ...response }
-
+    return { ...response }
   }
 }
