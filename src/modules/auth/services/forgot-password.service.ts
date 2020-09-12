@@ -41,21 +41,22 @@ export class ForgotPasswordService {
       },
       { expiresIn: 1500 },
     );
-
-    const mail = await this.mail.SendSingleEMailHtml(
-      account.email,
-      'Reset Password',
-      `${this.config.get<string>('app.client_Host')}/setnewpassword/${token}`,
-      account.userName,
-      this.config.get<string>('app.client_Host'),
-    );
-
-    return !mail
-      ? {
-        error: 'ERROR_SEND_EMAIL',
-        detail: 'Ocurrio un problema al enviar el email',
-      }
-      : { success: 'OK' };
+    /*
+        const mail = await this.mail.SendSingleEMailHtml(
+          account.email,
+          'Reset Password',
+          `${this.config.get<string>('app.client_Host')}/setnewpassword/${token}`,
+          account.userName,
+          this.config.get<string>('app.client_Host'),
+        );
+    
+        return !mail
+          ? {
+            error: 'ERROR_SEND_EMAIL',
+            detail: 'Ocurrio un problema al enviar el email',
+          }
+          : { success: 'OK' };*/
+    return {}
   }
 
   public async ForgotPassword() { }
