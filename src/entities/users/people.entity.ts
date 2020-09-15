@@ -1,7 +1,7 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToOne, Index } from 'typeorm'
 
-import { Genders } from './enums/gender.enum';
 import { User } from './user.entity';
+import { Genders } from './../enums';
 
 @Entity('people')
 @Index(['phone'], { unique: true })

@@ -1,7 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, Index, OneToOne, JoinColumn } from 'typeorm';
 
-import { States } from './enums/states.enum';
 import { People } from './people.entity';
+import { States } from './../enums';
 
 @Entity('user')
 @Index(['key', 'username'], { unique: true })
