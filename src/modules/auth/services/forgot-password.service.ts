@@ -59,5 +59,5 @@ export class ForgotPasswordService {
     return {}
   }
 
-  public async ForgotPassword() { }
+  public async ForgotPassword(token: string) { }
 }

@@ -1,39 +1,43 @@
-import { Entity, PrimaryGeneratedColumn, Column, Index, BeforeInsert } from "typeorm";
-import { States } from "./enums/states.enum";
-import { encrypto } from 'pass-encrypto';
+import { Entity, PrimaryGeneratedColumn, Column, Index, OneToOne, JoinColumn } from 'typeorm';
 
-@Entity("user")
-@Index(["key", "username"], { unique: true })
+import { States } from './enums/states.enum';
+import { People } from './people.entity';
+
+@Entity('user')
+@Index(['key', 'username'], { unique: true })
 export class User {
-
-  @PrimaryGeneratedColumn("uuid")
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column("character varying", {
+  @Column('character varying', {
     length: 50,
-    nullable: false
+    nullable: false,
   })
   username: string;
 
-  @Column("character varying", {
+  @Column('character varying', {
     length: 250,
-    nullable: false
+    nullable: false,
   })
   password: string;
 
-  @Column("uuid", { nullable: false })
+  @Column('uuid', { nullable: false })
   key: string;
 
-  @Column("enum", {
+  @Column('enum', {
     enum: States,
     default: States.Active,
-    nullable: false
+    nullable: false,
   })
-  state: States
+  state: States;
 
-  @BeforeInsert()
-  hashPassword() {
-    console.log(encrypto(this.password))
-    this.password = encrypto(this.password);
-  }
+  @OneToOne(
+    type => People,
+    people => people.user, {
+    nullable: false,
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE'
+  })
+  @JoinColumn({ name: 'fk_userId' })
+  people: People
 }

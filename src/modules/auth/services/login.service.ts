@@ -14,13 +14,13 @@ export class LoginService {
     @InjectRepository(User)
     private readonly repositoryUser: Repository<User>,
     private readonly jwtService: JwtService,
-  ) {}
+  ) { }
 
   public async Login(account: LoginDto): Promise<User | any> {
-    /*const srt: any = await HashPassword('phurion123');
-    await this.repositoryUser.save({
-      username: 'DarKPhuRioN'.toLowerCase(),
-      password: srt,
+    //const srt: any = await HashPassword('phurion123');
+    /*await this.repositoryUser.insert({
+      username: 'DarKPhuRioNjulio'.toLowerCase(),
+      password: 'julio123',
       key: 'f6a3be4e-cec9-4088-a69c-f33c0d4dafc8'
     });*/
 
@@ -33,7 +33,7 @@ export class LoginService {
         error: 'NO_EXISTS_ACCOUNT',
         detail: 'No existe ninguna cuenta con estas credenciales!.',
       };
-    else if (response.state === 'inactive')
+    else if (response.state === States.Inactive)
       return {
         error: 'INACTIVE_ACCOUNT',
         detail: 'Cuenta inactiva!.',
