@@ -3,8 +3,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
 
-import { User } from '../../../entities/user.entity';
-import { States } from './../../../entities/enums/states.enum';
+import { User } from '../../../entities/users/user.entity';
+import { States } from './../../../entities/enums';
 import { HashPassword, ComparePassword } from './passEncrypt.service';
 import { LoginDto } from '../dto/login.dto';
 

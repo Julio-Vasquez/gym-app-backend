@@ -3,16 +3,16 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, getManager } from 'typeorm';
 import { randomStringGenerator } from '@nestjs/common/utils/random-string-generator.util';
 
-import { User } from '../../../entities/user.entity';
+import { User } from '../../../entities/users/user.entity';
 import { SignupDto } from '../dto';
-import { States } from 'src/entities/enums/states.enum';
+import { States } from '../../../entities/enums';
 
 @Injectable()
 export class SignupService {
   constructor(
     @InjectRepository(User)
     private readonly repositoryUser: Repository<User>,
-  ) {}
+  ) { }
 
   public async CreateAccount(newAccount: SignupDto): Promise<boolean | any> {
     const isExists = await this.repositoryUser.findOne({

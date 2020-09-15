@@ -4,7 +4,7 @@ import { Repository } from 'typeorm';
 import { JwtService } from '@nestjs/jwt'
 import { randomStringGenerator } from '@nestjs/common/utils/random-string-generator.util';
 
-import { User } from '../../../entities/user.entity';
+import { User } from '../../../entities/users/user.entity';
 import { States } from '../../../entities/enums/states.enum'
 import { ForgotPasswordDto } from '../dto/';
 
