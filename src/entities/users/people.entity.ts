@@ -3,7 +3,7 @@ import { Entity, Column, PrimaryGeneratedColumn, OneToOne, Index } from 'typeorm
 import { User } from './user.entity';
 import { Genders } from './../enums';
 
-@Entity('people')
+@Entity('people', { schema: 'users' })
 @Index(['phone'], { unique: true })
 export class People {
 

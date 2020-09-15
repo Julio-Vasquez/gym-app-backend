@@ -3,7 +3,7 @@ import { Entity, PrimaryGeneratedColumn, Column, Index, OneToOne, JoinColumn } f
 import { People } from './people.entity';
 import { States } from './../enums';
 
-@Entity('user')
+@Entity('user', { schema: 'users' })
 @Index(['key', 'username'], { unique: true })
 export class User {
   @PrimaryGeneratedColumn('uuid')
