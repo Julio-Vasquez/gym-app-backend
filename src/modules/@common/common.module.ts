@@ -1,19 +1,16 @@
-/*import { Module, Global } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { Module, Global } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
-import appConfig from './config/app.config';
-import typeormConfig from './config/typeorm.config';
+import { People } from 'src/entities/users/people.entity';
+import { User } from 'src/entities/users/user.entity';
+
+import { PeopleDefault } from './database/people.default';
+import { UserDefault } from './database/user.default';
 
 @Global()
 @Module({
-  imports: [
-    ConfigModule.forRoot({
-      isGlobal: true,
-      envFilePath: process.cwd() + '/.env',
-      load: [appConfig, typeormConfig]
-    })
-  ],
+  imports: [TypeOrmModule.forFeature([People, User])],
   controllers: [],
-  providers: [],
+  providers: [PeopleDefault, UserDefault],
 })
-export class CommonModule { }*/
+export class CommonModule {}

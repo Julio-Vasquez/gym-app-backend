@@ -30,6 +30,7 @@ export class CreateService {
       dateBirth: newClient.dateBirth,
       phone: newClient.phone,
       gender: newClient.gender,
+      role: newClient.rol,
     });
     return client
       ? { success: 'ok' }

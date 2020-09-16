@@ -7,7 +7,7 @@ import {
   IsEnum,
   IsNumberString,
 } from 'class-validator';
-import { Genders } from '../../../entities/enums';
+import { Genders, Roles } from '../../../entities/enums';
 
 export class PersonDto {
   @IsNotEmpty()
@@ -36,4 +36,9 @@ export class PersonDto {
   @IsString()
   @IsEnum(Genders)
   readonly gender: Genders;
+
+  @IsNotEmpty()
+  @IsString()
+  @IsEnum(Roles)
+  readonly rol: Roles;
 }

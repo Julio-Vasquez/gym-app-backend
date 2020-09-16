@@ -30,4 +30,15 @@ export class FindService {
 
     return res;
   }
+
+  public async findByRoles(role: string) {
+    const res = await this.peopleRepository.findOne({
+      where: { role: role },
+    });
+
+    if (!res || res.name.length < 1)
+      return { error: 'NO_TRAINER', detail: 'No records of clients' };
+
+    return res;
+  }
 }

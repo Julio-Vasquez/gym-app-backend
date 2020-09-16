@@ -4,10 +4,12 @@ import {
   PrimaryGeneratedColumn,
   OneToOne,
   Index,
+  CreateDateColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 
 import { User } from './user.entity';
-import { Genders } from './../enums';
+import { Genders, Roles } from './../enums';
 
 @Entity('people', { schema: 'users' })
 @Index(['phone', 'identification'], { unique: true })
@@ -35,6 +37,18 @@ export class People {
     nullable: false,
   })
   gender: string;
+
+  @Column('enum', {
+    enum: Roles,
+    nullable: false,
+  })
+  role: string;
+
+  @CreateDateColumn({ type: 'timestamp', name: 'created_at' })
+  createdAt: Date;
+
+  @UpdateDateColumn({ type: 'timestamp', name: 'updated_at' })
+  updatedAt: Date;
 
   @OneToOne(
     type => User,
