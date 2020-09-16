@@ -1,4 +1,13 @@
-import { Entity, PrimaryGeneratedColumn, Column, Index, OneToOne, JoinColumn } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  Index,
+  OneToOne,
+  JoinColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 import { People } from './people.entity';
 import { States } from './../enums';
@@ -31,13 +40,21 @@ export class User {
   })
   state: States;
 
+  @CreateDateColumn({ type: 'timestamp', name: 'created_at' })
+  createdAt: Date;
+
+  @UpdateDateColumn({ type: 'timestamp', name: 'updated_at' })
+  updatedAt: Date;
+
   @OneToOne(
     type => People,
-    people => people.user, {
-    nullable: false,
-    onDelete: 'CASCADE',
-    onUpdate: 'CASCADE'
-  })
+    people => people.user,
+    {
+      nullable: false,
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE',
+    },
+  )
   @JoinColumn({ name: 'fk_userId' })
-  people: People
+  people: People;
 }

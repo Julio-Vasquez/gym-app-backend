@@ -14,7 +14,7 @@ export class LoginService {
     @InjectRepository(User)
     private readonly repositoryUser: Repository<User>,
     private readonly jwtService: JwtService,
-  ) { }
+  ) {}
 
   public async Login(account: LoginDto): Promise<User | any> {
     //const srt: any = await HashPassword('phurion123');

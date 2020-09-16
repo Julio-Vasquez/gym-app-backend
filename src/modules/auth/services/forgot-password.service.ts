@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { JwtService } from '@nestjs/jwt'
+import { JwtService } from '@nestjs/jwt';
 import { randomStringGenerator } from '@nestjs/common/utils/random-string-generator.util';
 
 import { User } from '../../../entities/users/user.entity';
-import { States } from '../../../entities/enums/states.enum'
+import { States } from '../../../entities/enums/states.enum';
 import { ForgotPasswordDto } from '../dto/';
 
 @Injectable()
@@ -13,12 +13,12 @@ export class ForgotPasswordService {
   constructor(
     @InjectRepository(User)
     private readonly repositoryUser: Repository<User>,
-    private readonly jwtService: JwtService
-  ) { }
+    private readonly jwtService: JwtService,
+  ) {}
 
   public async RequestForgotPassword(user: ForgotPasswordDto) {
     const account = await this.repositoryUser.findOne({
-      where: { username: user.userName }
+      where: { username: user.userName },
     });
 
     if (!account) {
@@ -28,9 +28,7 @@ export class ForgotPasswordService {
     }
     const privateCode = randomStringGenerator();
 
-    await this.repositoryUser.update(
-      { id: account.id },
-      { key: privateCode });
+    await this.repositoryUser.update({ id: account.id }, { key: privateCode });
 
     //token expire in 25minutes
     const token = this.jwtService.sign(
@@ -56,8 +54,8 @@ export class ForgotPasswordService {
             detail: 'Ocurrio un problema al enviar el email',
           }
           : { success: 'OK' };*/
-    return {}
+    return {};
   }
 
-  public async ForgotPassword(token: string) { }
+  public async ForgotPassword(token: string) {}
 }
