@@ -1,26 +1,48 @@
-import { Controller, Body, Post, HttpStatus } from '@nestjs/common';
+import {
+  Controller,
+  Body,
+  Post,
+  HttpStatus,
+  Get,
+  Param,
+  HttpException,
+} from '@nestjs/common';
 
 import { PersonDto } from './dto/person.dto';
-import { PersonService } from './services/person.service';
+import { CreateService } from './services/create.service';
+import { FindService } from './services/find.service';
 
 @Controller('users')
 export class UsersController {
-  constructor(private readonly personService: PersonService) {}
+  constructor(
+    private readonly createService: CreateService,
+    private readonly findService: FindService,
+  ) {}
 
-  @Post()
-  public async ListClients() {}
-  /*
-  @Post('signup')
-  public async Singup(@Body() account: any) {
-    const res = await this.signupService.CreateAccount(account);
+  @Get('list')
+  public async ListClients() {
+    const res: any = await this.findService.findAll();
     return res.error
-      ? { ...res, status: HttpStatus.CONFLICT }
-      : { ...res, success: 'ok' };
-  }*/
+      ? { ...res, status: HttpStatus.NO_CONTENT }
+      : { payload: res, success: 'ok' };
+  }
+
+  @Get('find/:identification')
+  public async ListCLientsId(@Param('identification') identification: number) {
+    if (!identification || identification < 0) {
+      throw new HttpException('Bad_Request', HttpStatus.BAD_REQUEST);
+    }
+    const res: any = await this.findService.findByIdentification(
+      identification,
+    );
+    return res.error
+      ? { ...res, status: HttpStatus.NO_CONTENT }
+      : { payload: res, success: 'ok' };
+  }
 
   @Post('create')
   public async CreateClient(@Body() newClient: PersonDto) {
-    const res = await this.personService.CreateNewClient(newClient);
+    const res = await this.createService.CreateNewClient(newClient);
     return res.error
       ? { ...res, status: HttpStatus.CONFLICT }
       : { ...res, detail: 'SUCCESSFUL_SIGNUP' };
