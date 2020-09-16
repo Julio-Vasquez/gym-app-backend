@@ -32,8 +32,10 @@ export class FindService {
   }
 
   public async findByRoles(role: string) {
+    const rol = role.charAt(0).toUpperCase() + role.substr(1).toLowerCase();
+
     const res = await this.peopleRepository.findOne({
-      where: { role: role },
+      where: { role: rol },
     });
 
     if (!res || res.name.length < 1)

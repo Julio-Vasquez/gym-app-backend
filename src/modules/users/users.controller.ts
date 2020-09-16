@@ -31,7 +31,7 @@ export class UsersController {
       : { payload: res, success: 'ok' };
   }
 
-  @Get('find/:identification')
+  @Get('find-:identification')
   public async ListCLientsId(@Param('identification') identification: number) {
     if (!identification || identification < 0) {
       throw new HttpException('Bad_Request', HttpStatus.BAD_REQUEST);
