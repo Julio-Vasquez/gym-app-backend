@@ -55,6 +55,6 @@ export class User {
       onUpdate: 'CASCADE',
     },
   )
-  @JoinColumn({ name: 'fk_userId' })
+  @JoinColumn({ name: 'fk_peopleId' })
   people: People;
 }

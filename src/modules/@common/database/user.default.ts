@@ -34,6 +34,7 @@ export class UserDefault {
     if (isExists) return;
 
     const _new = this.userRepository.create(object);
+
     return await this.userRepository.save(_new);
   }
 }
