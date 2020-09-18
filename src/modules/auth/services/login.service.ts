@@ -22,8 +22,9 @@ export class LoginService {
       username: 'DarKPhuRioNjulio'.toLowerCase(),
       password: 'julio123',
       key: 'f6a3be4e-cec9-4088-a69c-f33c0d4dafc8'
-    });*/
-
+    });*/ /*
+    const str: any = await HashPassword('phurion123');
+    console.log(str);*/
     const response = await this.repositoryUser.findOne({
       where: { username: account.userName.toLowerCase() },
     });

@@ -7,8 +7,9 @@ import {
   Param,
   HttpException,
   Put,
+  ParseIntPipe,
+  Request,
 } from '@nestjs/common';
-import { Roles } from 'src/entities/enums';
 
 import { PersonDto } from './dto/person.dto';
 import { CreateService } from './services/create.service';
@@ -32,7 +33,9 @@ export class UsersController {
   }
 
   @Get('find-:identification')
-  public async ListCLientsId(@Param('identification') identification: number) {
+  public async ListCLientsId(
+    @Param('identification', ParseIntPipe) identification: number,
+  ) {
     if (!identification || identification < 0) {
       throw new HttpException('Bad_Request', HttpStatus.BAD_REQUEST);
     }
@@ -56,16 +59,22 @@ export class UsersController {
   }
 
   @Post('create')
-  public async CreateClient(@Body() newClient: PersonDto) {
-    const res = await this.createService.CreateNewClient(newClient);
-    return res.error
+  public async CreateClient(@Body() newClient: PersonDto, @Request() req) {
+    const res = await this.createService.CreateNewClient(
+      newClient,
+      req.headers['authorization'].split(' ')[1],
+    );
+    return res?.error
       ? { ...res, status: HttpStatus.CONFLICT }
       : { ...res, detail: 'Successful signup' };
   }
 
   @Put('update')
-  public async UpdatePerson(@Body() newPerson: PersonDto) {
-    const res = await this.updateService.UpdatePerson(newPerson);
+  public async UpdatePerson(@Body() newPerson: PersonDto, @Request() req) {
+    const res = await this.updateService.UpdatePerson(
+      newPerson,
+      req.headers['authorization'].split(' ')[1],
+    );
     return res.error
       ? { ...res, status: HttpStatus.NO_CONTENT }
       : { ...res, detail: 'Sucessful update' };

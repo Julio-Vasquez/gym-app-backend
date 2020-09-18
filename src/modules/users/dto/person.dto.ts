@@ -40,5 +40,5 @@ export class PersonDto {
   @IsNotEmpty()
   @IsString()
   @IsEnum(Roles)
-  readonly rol: Roles;
+  readonly role: Roles;
 }

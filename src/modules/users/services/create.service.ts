@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
 import { People } from 'src/entities/users/people.entity';
+import { CreateUser } from 'src/entities/audits/createuser.entity';
 import { PersonDto } from '../dto/person.dto';
 
 @Injectable()
@@ -10,9 +11,11 @@ export class CreateService {
   constructor(
     @InjectRepository(People)
     private readonly peopleRepository: Repository<People>,
+    @InjectRepository(CreateUser)
+    private readonly createUserAuditsRepository: Repository<CreateUser>,
   ) {}
 
-  public async CreateNewClient(newClient: PersonDto) {
+  public async CreateNewClient(newClient: PersonDto, user: string) {
     const isExists = await this.peopleRepository.findOne({
       where: { identification: newClient.identification },
     });
@@ -23,15 +26,15 @@ export class CreateService {
         detail: 'the client you want to create is already registered',
       };
 
-    const client = await this.peopleRepository.insert({
-      name: newClient.name,
-      lastName: newClient.lastName,
-      identification: newClient.identification,
-      dateBirth: newClient.dateBirth,
-      phone: newClient.phone,
-      gender: newClient.gender,
-      role: newClient.rol,
+    const client = await this.peopleRepository.save({
+      ...newClient,
     });
+
+    await this.createUserAuditsRepository.save({
+      data: { ...client },
+      username: user,
+    });
+
     return client
       ? { success: 'ok' }
       : { error: 'ERROR', detail: 'unknown process failed' };
