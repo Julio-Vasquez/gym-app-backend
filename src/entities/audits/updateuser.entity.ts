@@ -8,9 +8,9 @@ import {
 
 import { People } from '../users/people.entity';
 
-@Entity('create_user', { schema: 'audits' })
+@Entity('update_user', { schema: 'audits' })
 @Index(['username'], { unique: true })
-export class CreateUser {
+export class UpdateUser {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -21,7 +21,10 @@ export class CreateUser {
   username: string;
 
   @Column('simple-json', { nullable: false })
-  data: People;
+  oldData: People;
+
+  @Column('simple-json', { nullable: false })
+  newData: People;
 
   @CreateDateColumn({ type: 'timestamp', name: 'created_at' })
   createdAt: Date;
