@@ -9,17 +9,17 @@ export class PgProvider implements TypeOrmOptionsFactory {
   createTypeOrmOptions(): TypeOrmModuleOptions {
     return {
       type: "postgres",
-      host: 'ec2-50-19-26-235.compute-1.amazonaws.com',
+      host: '127.0.0.1',
       port: +5432,
-      username: 'syssclupdwomgz',
-      password: 'd70e51f615900b8221ee82985e67085a05561f5958cfd704b4e1055f33db56e3',
-      database: 'dbdpa65rl979h4',
+      username: 'postgres',
+      password: 'phurion123',
+      database: 'gymdb',
       synchronize: true,
       logging: true,
       entities: ['dist/entities/**/*entity.js'],
-      ssl: {
+      /*ssl: {
         rejectUnauthorized: false
-      }
+      }*/
     };
   }
 }
