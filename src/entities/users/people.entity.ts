@@ -5,11 +5,13 @@ import {
   OneToOne,
   Index,
   CreateDateColumn,
-  UpdateDateColumn,
+  UpdateDateColumn, OneToMany
 } from 'typeorm';
 
 import { User } from './user.entity';
 import { Genders, Roles } from './../enums';
+import { Suscription } from './suscription.entity';
+import { type } from 'os';
 
 @Entity('people', { schema: 'users' })
 @Index(['phone', 'identification'], { unique: true })
@@ -60,4 +62,7 @@ export class People {
     },
   )
   user: User;
+
+  @OneToMany(type => Suscription, suscription => suscription.people)
+  suscription: Suscription[];
 }
