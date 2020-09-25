@@ -21,6 +21,12 @@ export class Suscription {
   @Column('int', { nullable: false })
   days: number;
 
+  @Column('date', { nullable: false })
+  start: string;
+
+  @Column('date', { nullable: false })
+  end: string;
+
   @CreateDateColumn({ type: 'timestamp', name: 'created_at' })
   createdAt: Date;
 
