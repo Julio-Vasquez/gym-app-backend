@@ -9,11 +9,12 @@ export class AuthController {
   constructor(
     private readonly loginService: LoginService,
     private readonly forgotPasswordService: ForgotPasswordService,
-  ) {}
+  ) { }
 
   @Post('login')
   public async Login(@Body() account: LoginDto) {
     const res = await this.loginService.Login(account);
+    console.log(res)
     return res.error
       ? { ...res, status: HttpStatus.UNAUTHORIZED }
       : { token: res, success: 'ok' };

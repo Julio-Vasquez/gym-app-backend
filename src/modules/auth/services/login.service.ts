@@ -14,32 +14,36 @@ export class LoginService {
     @InjectRepository(User)
     private readonly repositoryUser: Repository<User>,
     private readonly jwtService: JwtService,
-  ) {}
+  ) { }
 
   public async Login(account: LoginDto): Promise<User | any> {
-    //const srt: any = await HashPassword('phurion123');
+    //const srt: any = await HashPassword('pulido123');
     /*await this.repositoryUser.insert({
       username: 'DarKPhuRioNjulio'.toLowerCase(),
       password: 'julio123',
       key: 'f6a3be4e-cec9-4088-a69c-f33c0d4dafc8'
-    });*/ /*
-    const str: any = await HashPassword('phurion123');
-    console.log(str);*/
+    });*/
+    /* const str: any = await HashPassword('pulido123');
+     console.log(str);
+ */
     const response = await this.repositoryUser.findOne({
       where: { username: account.userName.toLowerCase() },
     });
-
+    console.log(response)
     if (!response)
       return {
         error: 'NO_EXISTS_ACCOUNT',
         detail: 'No existe ninguna cuenta con estas credenciales!.',
       };
-    else if (response.state === States.Inactive)
+
+    if (response.state === States.Inactive)
       return {
         error: 'INACTIVE_ACCOUNT',
         detail: 'Cuenta inactiva!.',
       };
-    else if (!ComparePassword(account.password, response.password))
+
+    const result = await ComparePassword(account.password, response.password);
+    if (!result)
       return {
         error: 'NO_MATCH_PASSWORD',
         detail: 'No coincide la contraseña',
