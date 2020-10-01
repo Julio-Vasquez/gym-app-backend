@@ -11,7 +11,6 @@ import {
 import { User } from './user.entity';
 import { Genders, Roles } from './../enums';
 import { Suscription } from './suscription.entity';
-import { type } from 'os';
 
 @Entity('people', { schema: 'users' })
 @Index(['phone', 'identification'], { unique: true })
