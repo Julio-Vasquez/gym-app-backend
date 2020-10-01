@@ -22,15 +22,7 @@ export class UsersController {
     private readonly createService: CreateService,
     private readonly findService: FindService,
     private readonly updateService: UpdateService,
-  ) {}
-
-  @Get('list')
-  public async ListClients() {
-    const res: any = await this.findService.findAll();
-    return res.error
-      ? { ...res, status: HttpStatus.NO_CONTENT }
-      : { payload: res, success: 'ok' };
-  }
+  ) { }
 
   @Get('find-:identification')
   public async ListCLientsId(

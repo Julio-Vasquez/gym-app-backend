@@ -9,16 +9,7 @@ export class FindService {
   constructor(
     @InjectRepository(People)
     private readonly peopleRepository: Repository<People>,
-  ) {}
-
-  public async findAll() {
-    const res = await this.peopleRepository.find();
-
-    if (!res || res.length < 1)
-      return { error: 'NO_DATA', detail: 'No records' };
-
-    return res;
-  }
+  ) { }
 
   public async findByIdentification(identification: number) {
     const res = await this.peopleRepository.findOne({
@@ -34,12 +25,13 @@ export class FindService {
   public async findByRoles(role: string) {
     const rol = role.charAt(0).toUpperCase() + role.substr(1).toLowerCase();
 
-    const res = await this.peopleRepository.findOne({
+    const res = await this.peopleRepository.find({
       where: { role: rol },
+      select: ["name", "lastName", "phone", "identification", "dateBirth"]
     });
 
-    if (!res || res.name.length < 1)
-      return { error: 'NO_TRAINER', detail: 'No records of clients' };
+    if (!res || res.length < 1)
+      return { error: 'NO_DATA', detail: 'No records of clients' };
 
     return res;
   }
