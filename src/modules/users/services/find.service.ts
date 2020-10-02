@@ -14,6 +14,7 @@ export class FindService {
   public async findByIdentification(identification: number) {
     const res = await this.peopleRepository.findOne({
       where: { identification: identification },
+      select: ["name", "lastName", "phone", "identification", "dateBirth", "gender"]
     });
 
     if (!res || res.name.length < 1)
