@@ -11,8 +11,9 @@ import {
 import { User } from './user.entity';
 import { Genders, Roles } from './../enums';
 import { Suscription } from './suscription.entity';
+import { Payment } from './payment.entity';
 
-@Entity('people', { schema: 'users' })
+@Entity('people')
 @Index(['phone', 'identification'], { unique: true })
 export class People {
   @PrimaryGeneratedColumn('uuid')
@@ -54,14 +55,13 @@ export class People {
   @OneToOne(
     type => User,
     user => user.people,
-    {
-      nullable: false,
-      onDelete: 'CASCADE',
-      onUpdate: 'CASCADE',
-    },
+    { nullable: false }
   )
   user: User;
 
   @OneToMany(type => Suscription, suscription => suscription.people)
   suscription: Suscription[];
+
+  @OneToMany(type => Payment, payment => payment.people)
+  payment: Payment[];
 }

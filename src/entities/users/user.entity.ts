@@ -12,19 +12,19 @@ import {
 import { People } from './people.entity';
 import { States } from './../enums';
 
-@Entity('user', { schema: 'users' })
+@Entity('user')
 @Index(['key', 'username'], { unique: true })
 export class User {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column('character varying', {
+  @Column('varchar', {
     length: 50,
     nullable: false,
   })
   username: string;
 
-  @Column('character varying', {
+  @Column('varchar', {
     length: 250,
     nullable: false,
   })

@@ -1,4 +1,3 @@
-import { type } from 'os';
 import {
   Entity,
   Column,
@@ -8,9 +7,10 @@ import {
   ManyToOne,
   JoinColumn
 } from 'typeorm';
+import { States } from '../enums';
 import { People } from './people.entity';
 
-@Entity('suscription', { schema: 'users' })
+@Entity('suscription')
 export class Suscription {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -27,6 +27,9 @@ export class Suscription {
   @Column('date', { nullable: false })
   end: string;
 
+  @Column('enum', { enum: States, default: States.Active })
+  state: States;
+
   @CreateDateColumn({ type: 'timestamp', name: 'created_at' })
   createdAt: Date;
 
@@ -37,13 +40,10 @@ export class Suscription {
     type => People,
     people => people.suscription,
     {
-      nullable: false,
-      onDelete: 'CASCADE',
-      onUpdate: 'CASCADE',
+      nullable: false
     }
   )
   @JoinColumn({ name: 'fk_people' })
-  @Column({ type: Number })
   people: People;
 
 }
