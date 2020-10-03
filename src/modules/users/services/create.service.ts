@@ -13,7 +13,7 @@ export class CreateService {
     private readonly peopleRepository: Repository<People>,
     @InjectRepository(CreateUser)
     private readonly createUserAuditsRepository: Repository<CreateUser>,
-  ) {}
+  ) { }
 
   public async CreateNewClient(newClient: PersonDto, user: string) {
     const isExists = await this.peopleRepository.findOne({

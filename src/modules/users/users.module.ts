@@ -15,4 +15,4 @@ import { UpdateUser } from 'src/entities/audits/updateuser.entity';
   controllers: [UsersController],
   providers: [CreateService, FindService, UpdateService],
 })
-export class UsersModule {}
+export class UsersModule { }
