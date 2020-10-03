@@ -8,13 +8,13 @@ import {
 
 import { People } from '../users/people.entity';
 
-@Entity('update_user', { schema: 'audits' })
-@Index(['username'], { unique: true })
+@Entity('update_user')
+@Index(['username'], { unique: false })
 export class UpdateUser {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column('character varying', {
+  @Column('varchar', {
     length: 50,
     nullable: false,
   })
