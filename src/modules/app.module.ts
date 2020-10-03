@@ -1,22 +1,24 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-import { PgProvider } from './@common/providers/pg.provider';
+import { DBProvider } from './@common/providers/db.provider';
 
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { CommonModule } from './@common/common.module';
+import { SuscriptionModule } from './suscription/suscription.module';
 
 @Module({
   imports: [
     TypeOrmModule.forRootAsync({
-      useClass: PgProvider,
+      useClass: DBProvider,
     }),
     CommonModule,
     AuthModule,
     UsersModule,
+    SuscriptionModule
   ],
   controllers: [],
   providers: [],
 })
-export class AppModule {}
+export class AppModule { }
