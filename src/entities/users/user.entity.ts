@@ -13,7 +13,7 @@ import { People } from './people.entity';
 import { States } from './../enums';
 
 @Entity('user')
-@Index(['key', 'username'], { unique: true })
+@Index(['key', 'username', 'mail'], { unique: true })
 export class User {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -39,6 +39,12 @@ export class User {
     nullable: false,
   })
   state: States;
+
+  @Column('text', {
+    nullable: false,
+    unique: true,
+  })
+  mail: string;
 
   @CreateDateColumn({ type: 'timestamp', name: 'created_at' })
   createdAt: Date;
