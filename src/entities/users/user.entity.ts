@@ -42,7 +42,6 @@ export class User {
 
   @Column('text', {
     nullable: false,
-    unique: true,
   })
   mail: string;
 
