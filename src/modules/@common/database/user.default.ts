@@ -9,6 +9,7 @@ const USERS = [
     username: 'pulido'.toLowerCase(),
     password: '123123',
     key: '9872c96a-7b13-4bf9-88cd-5965f3df61f7',
+    mail: /*'lucho9515baco@gmail.com'*/'jualvalitube@gmail.com',
     people: '7c556aca-72ba-4d3d-8f0e-dd57ff0869ef',
   },
   {
@@ -16,6 +17,7 @@ const USERS = [
     username: 'carlos'.toLowerCase(),
     password: '123123',
     key: 'e5552f6a-bf3b-4205-a0c5-070a99fe8c82',
+    mail:'crojas02@outlook.com',
     people: 'c1f8dd00-7aad-437e-8029-b44faa06f107',
   },
 ];
