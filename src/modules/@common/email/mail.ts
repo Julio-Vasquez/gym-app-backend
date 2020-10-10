@@ -2,12 +2,14 @@ import { ConfigMail } from './config';
 import { ResetPasswordMail } from './template';
 
 export class Mail {
+  config: ConfigMail;
   email: string;
   company: string;
 
-  constructor(private readonly config: ConfigMail) {
-    this.company = process.env.COMPANY;
-    this.email = process.env.EMAIL;
+  constructor() {
+    this.config = new ConfigMail();
+    this.company = 'Mind Body';
+    this.email = 'fernandopulido473@gmail.com';
   }
 
   public async SendMultipleEMail(dest: string[], sub: string, txt: string) {

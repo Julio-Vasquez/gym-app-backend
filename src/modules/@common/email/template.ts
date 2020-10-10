@@ -22,7 +22,7 @@ export const ResetPasswordMail = (
         </head>
         <body>
             <span class="preheader">
-                Use este link para restaurar su contraseña. Este link es valido solo por 30 minutos.
+                Use este link para restaurar su contraseña. Este link es valido solo por 25 minutos.
             </span>
             <table
                 class="email-wrapper"
