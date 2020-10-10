@@ -6,20 +6,21 @@ import { randomStringGenerator } from '@nestjs/common/utils/random-string-genera
 
 import { User } from '../../../entities/users/user.entity';
 import { States } from '../../../entities/enums/states.enum';
-import { ForgotPasswordDto } from '../dto/';
+import { ForgotPasswordDto, UpdatePasswordDto } from '../dto/';
 import { Mail } from './../../@common/email';
+import { HashPassword } from './passEncrypt.service';
 
 @Injectable()
 export class ForgotPasswordService {
   constructor(
     @InjectRepository(User)
-    private readonly repositoryUser: Repository<User>,
+    private readonly userRepository: Repository<User>,
     private readonly jwtService: JwtService,
     private readonly mail: Mail,
-  ) {}
+  ) { }
 
   public async RequestForgotPassword(user: ForgotPasswordDto) {
-    const account = await this.repositoryUser.findOne({
+    const account = await this.userRepository.findOne({
       where: { username: user.userName },
     });
 
@@ -30,12 +31,11 @@ export class ForgotPasswordService {
     }
     const privateCode = randomStringGenerator();
 
-    await this.repositoryUser.update({ id: account.id }, { key: privateCode });
+    await this.userRepository.update({ id: account.id }, { key: privateCode });
 
     //token expire in 25minutes
     const token = this.jwtService.sign(
       {
-        ID: account.id,
         User: account.username,
         Code: privateCode,
       },
@@ -45,22 +45,22 @@ export class ForgotPasswordService {
     const mail = await this.mail.SendSingleEMailHtml(
       account.mail,
       'Reset Password',
-      `urlClientSetNewPassword`,
+      `127.0.0.1:3000/setnewpassword/${token}`,
       account.username,
-      'hostClient', //contact
+      '127.0.0.1:3000', //contact
     );
 
     return !mail
       ? {
-          error: 'ERROR_SEND_EMAIL',
-          detail: 'Ocurrio un problema al enviar el email',
-        }
+        error: 'ERROR_SEND_EMAIL',
+        detail: 'Ocurrio un problema al enviar el email',
+      }
       : { success: 'OK' };
   }
 
-  public async ForgotPassword(restore: string) {
+  public async ForgotPassword(restore: UpdatePasswordDto) {
     console.log(restore);
-    const token: any = this.jwt.decode(restore.token);
+    const token: any = this.jwtService.decode(restore.token);
     console.log(token);
     if (!token)
       return {
@@ -70,10 +70,12 @@ export class ForgotPasswordService {
     else if (token.exp <= Math.round(new Date().getTime() / 1000))
       return { error: 'TOKEN_EXPIRED', detail: 'token expirado' };
 
-    const checkCode = await this.UserModel.findOne({
-      _id: token.ID,
-      code: token.Code,
-    }).exec();
+    const checkCode = await this.userRepository.findOne({
+      where:{
+        key: token.Code,
+        username: token.User
+      }
+    });
 
     if (!checkCode)
       return {
@@ -81,11 +83,12 @@ export class ForgotPasswordService {
         detail: 'Su private code fue cambiado',
       };
 
-    const currentUser = await this.UserModel.findOne({
-      _id: token.ID,
-      userName: token.User.toUpperCase(),
-      code: token.Code,
-    }).exec();
+      const currentUser = await this.userRepository.findOne({
+      where:{
+        username: token.User,
+        key: token.Code
+      }
+    });
 
     console.log(currentUser);
     if (!currentUser)
@@ -94,28 +97,27 @@ export class ForgotPasswordService {
         detail:
           'No existe usuario con esas credenciales o su private code fue cambiado',
       };
-    else if (currentUser.state !== State.Active)
+    else if (currentUser.state !== States.Active)
       return { error: 'INACTIVE_USER', detail: 'Usuario Inactivo' };
 
     const privateCode = randomStringGenerator();
-
-    const result = await this.UserModel.updateOne(
+    const pwd: any = await HashPassword(restore.password)
+    const result = await this.userRepository.update(
       {
-        _id: token.ID,
-        username: token.User.toUpperCase(),
-        code: token.Code,
+        username: token.User,
+        key: token.Code,
       },
       {
-        password: await HashPassword(restore.password),
-        code: privateCode,
+        password: pwd,
+        key: privateCode,
       },
-    ).exec();
+    );
 
-    return result.nModified > 0
+    return result.affected > 0
       ? { success: 'OK' }
       : {
-          error: 'NO_UPDATE',
-          detail: 'Datos iguales',
-        };
+        error: 'NO_UPDATE',
+        detail: 'Datos iguales',
+      };
   }
 }

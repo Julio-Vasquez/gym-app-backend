@@ -1,8 +1,8 @@
-import { Controller, HttpStatus, Post, Body } from '@nestjs/common';
+import { Controller, HttpStatus, Post, Body, Put } from '@nestjs/common';
 
 import { LoginService } from './services/login.service';
 import { ForgotPasswordService } from './services/forgot-password.service';
-import { LoginDto } from './dto';
+import { ForgotPasswordDto, LoginDto, UpdatePasswordDto } from './dto';
 
 @Controller('auth')
 export class AuthController {
@@ -18,5 +18,21 @@ export class AuthController {
     return res.error
       ? { ...res, status: HttpStatus.UNAUTHORIZED }
       : { token: res, success: 'ok' };
+  }
+
+  @Post('request-forgot-password')
+  public async RequesForgotPassword(@Body() account: ForgotPasswordDto) {
+    const res = await this.forgotPasswordService.RequestForgotPassword(account)
+    return (res?.error)
+      ? { ...res, status: HttpStatus.CONFLICT }
+      : { ...res, detail: 'MAIL_SEND' };
+  }
+
+  @Put('forgot-password')
+  public async ForgotPassword() {
+    const res = await this.forgotPasswordService.ForgotPassword({password: '', token:''});
+    return (res?.error)
+      ? { ...res, status: HttpStatus.CONFLICT }
+      : { ...res, detail: 'PASSWORD_UPDATE!' };
   }
 }

@@ -17,15 +17,15 @@ export class LoginService {
   ) { }
 
   public async Login(account: LoginDto): Promise<User | any> {
-    //const srt: any = await HashPassword('pulido123');
+    //const str: any = await HashPassword('pulido123');
     /*await this.repositoryUser.insert({
       username: 'DarKPhuRioNjulio'.toLowerCase(),
       password: 'julio123',
       key: 'f6a3be4e-cec9-4088-a69c-f33c0d4dafc8'
     });*/
     /* const str: any = await HashPassword('pulido123');
-     console.log(str);
- */
+    */
+   //console.log(str);
     const response = await this.repositoryUser.findOne({
       where: { username: account.userName.toLowerCase() },
     });
