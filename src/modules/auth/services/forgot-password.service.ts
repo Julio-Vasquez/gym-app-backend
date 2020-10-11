@@ -17,7 +17,7 @@ export class ForgotPasswordService {
     private readonly userRepository: Repository<User>,
     private readonly jwtService: JwtService,
     private readonly mail: Mail,
-  ) { }
+  ) {}
 
   public async RequestForgotPassword(user: ForgotPasswordDto) {
     const account = await this.userRepository.findOne({
@@ -52,16 +52,15 @@ export class ForgotPasswordService {
 
     return !mail
       ? {
-        error: 'ERROR_SEND_EMAIL',
-        detail: 'Ocurrio un problema al enviar el email',
-      }
+          error: 'ERROR_SEND_EMAIL',
+          detail: 'Ocurrio un problema al enviar el email',
+        }
       : { success: 'OK' };
   }
 
   public async ForgotPassword(restore: UpdatePasswordDto) {
-    console.log(restore);
     const token: any = this.jwtService.decode(restore.token);
-    console.log(token);
+
     if (!token)
       return {
         error: 'INVALID_TOKEN',
@@ -71,10 +70,10 @@ export class ForgotPasswordService {
       return { error: 'TOKEN_EXPIRED', detail: 'token expirado' };
 
     const checkCode = await this.userRepository.findOne({
-      where:{
+      where: {
         key: token.Code,
-        username: token.User
-      }
+        username: token.User,
+      },
     });
 
     if (!checkCode)
@@ -84,10 +83,10 @@ export class ForgotPasswordService {
       };
 
     const currentUser = await this.userRepository.findOne({
-      where:{
+      where: {
         username: token.User,
-        key: token.Code
-      }
+        key: token.Code,
+      },
     });
 
     console.log(currentUser);
@@ -101,7 +100,7 @@ export class ForgotPasswordService {
       return { error: 'INACTIVE_USER', detail: 'Usuario Inactivo' };
 
     const pwd: any = await HashPassword(restore.password);
-    
+
     const result = await this.userRepository.update(
       {
         username: token.User,
@@ -116,8 +115,8 @@ export class ForgotPasswordService {
     return result.affected > 0
       ? { success: 'OK' }
       : {
-        error: 'NO_UPDATE',
-        detail: 'Datos iguales',
-      };
+          error: 'NO_UPDATE',
+          detail: 'Datos iguales',
+        };
   }
 }
