@@ -29,8 +29,8 @@ export class AuthController {
   }
 
   @Put('forgot-password')
-  public async ForgotPassword() {
-    const res = await this.forgotPasswordService.ForgotPassword({password: '', token:''});
+  public async ForgotPassword(@Body() forgot: UpdatePasswordDto) {
+    const res = await this.forgotPasswordService.ForgotPassword(forgot);
     return (res?.error)
       ? { ...res, status: HttpStatus.CONFLICT }
       : { ...res, detail: 'PASSWORD_UPDATE!' };

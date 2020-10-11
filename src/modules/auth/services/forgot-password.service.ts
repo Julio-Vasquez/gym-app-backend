@@ -83,7 +83,7 @@ export class ForgotPasswordService {
         detail: 'Su private code fue cambiado',
       };
 
-      const currentUser = await this.userRepository.findOne({
+    const currentUser = await this.userRepository.findOne({
       where:{
         username: token.User,
         key: token.Code
@@ -100,8 +100,8 @@ export class ForgotPasswordService {
     else if (currentUser.state !== States.Active)
       return { error: 'INACTIVE_USER', detail: 'Usuario Inactivo' };
 
-    const privateCode = randomStringGenerator();
-    const pwd: any = await HashPassword(restore.password)
+    const pwd: any = await HashPassword(restore.password);
+    
     const result = await this.userRepository.update(
       {
         username: token.User,
@@ -109,7 +109,7 @@ export class ForgotPasswordService {
       },
       {
         password: pwd,
-        key: privateCode,
+        key: randomStringGenerator(),
       },
     );
 
