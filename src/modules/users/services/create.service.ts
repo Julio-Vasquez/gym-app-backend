@@ -13,7 +13,7 @@ export class CreateService {
     private readonly peopleRepository: Repository<People>,
     @InjectRepository(CreateUser)
     private readonly createUserAuditsRepository: Repository<CreateUser>,
-  ) { }
+  ) {}
 
   public async CreateNewClient(newClient: PersonDto, user: string) {
     const isExists = await this.peopleRepository.findOne({
@@ -23,7 +23,7 @@ export class CreateService {
     if (isExists)
       return {
         error: 'EXISTS_USER',
-        detail: 'the client you want to create is already registered',
+        detail: 'El cliente que desea crear ya está registrado',
       };
 
     const client = await this.peopleRepository.save({
@@ -37,6 +37,6 @@ export class CreateService {
 
     return client
       ? { success: 'ok' }
-      : { error: 'ERROR', detail: 'unknown process failed' };
+      : { error: 'ERROR', detail: 'proceso desconocido falló' };
   }
 }

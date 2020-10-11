@@ -9,10 +9,16 @@ import { UpdateService } from './services/update.service';
 import { People } from '../../entities/users/people.entity';
 import { CreateUser } from 'src/entities/audits/createuser.entity';
 import { UpdateUser } from 'src/entities/audits/updateuser.entity';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([People, CreateUser, UpdateUser])],
+  imports: [
+    TypeOrmModule.forFeature([People, CreateUser, UpdateUser]),
+    JwtModule.register({
+      privateKey: 'asdadasdsa',
+    }),
+  ],
   controllers: [UsersController],
   providers: [CreateService, FindService, UpdateService],
 })
-export class UsersModule { }
+export class UsersModule {}

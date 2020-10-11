@@ -10,6 +10,7 @@ import {
   ParseIntPipe,
   Request,
 } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 
 import { PersonDto } from './dto/person.dto';
 import { CreateService } from './services/create.service';
@@ -22,7 +23,8 @@ export class UsersController {
     private readonly createService: CreateService,
     private readonly findService: FindService,
     private readonly updateService: UpdateService,
-  ) { }
+    private readonly jwt: JwtService,
+  ) {}
 
   @Get('find-:identification')
   public async ListCLientsId(
@@ -52,9 +54,15 @@ export class UsersController {
 
   @Post('create')
   public async CreateClient(@Body() newClient: PersonDto, @Request() req) {
+    //console.log(req.headers['authorization'].split(' ')[1]);
+    const user: any = this.jwt.decode(
+      req.headers['authorization'].split(' ')[1],
+    );
+    console.log(user.res.username);
+
     const res = await this.createService.CreateNewClient(
       newClient,
-      req.headers['authorization'].split(' ')[1],
+      user.res.username,
     );
     return res?.error
       ? { ...res, status: HttpStatus.CONFLICT }
@@ -63,9 +71,13 @@ export class UsersController {
 
   @Put('update')
   public async UpdatePerson(@Body() newPerson: PersonDto, @Request() req) {
+    const user: any = this.jwt.decode(
+      req.headers['authorization'].split(' ')[1],
+    );
+    console.log(user.res.username);
     const res = await this.updateService.UpdatePerson(
       newPerson,
-      req.headers['authorization'].split(' ')[1],
+      user.res.username,
     );
     return res.error
       ? { ...res, status: HttpStatus.NO_CONTENT }
