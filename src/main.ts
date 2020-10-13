@@ -11,28 +11,22 @@ import { AppModule } from './modules/app.module';
 const bootstrap = async () => {
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,
-    new FastifyAdapter({ logger: true })
+    new FastifyAdapter({ logger: true }),
   );
 
   app.enableCors();
   app.useGlobalPipes(new ValidationPipe());
-  app.setGlobalPrefix('cg');
+  app.setGlobalPrefix('mb');
 
   const PORT: number = parseInt(process.env.PORT) || 8550;
   await app.listen(PORT, '0.0.0.0', () => {
+    Logger.log(`🔥  App Name : Cool Gym 🔥`, 'Logger-App-Name');
+    Logger.log(`🎓  Mode : dev 🎓`, 'Logger-App-Mode');
     Logger.log(
-      `🔥  App Name : Cool Gym 🔥`,
-      'Logger-App-Name',
-    );
-    Logger.log(
-      `🎓  Mode : dev 🎓`,
-      'Logger-App-Mode',
-    );
-    Logger.log(
-      `🚀  Server Running on 127.0.0.1:${PORT}/cg/ 🚀 `,
+      `🚀  Server Running on 127.0.0.1:${PORT}/mb/ 🚀 `,
       'Logger-Server-Running',
     );
   });
-}
+};
 
 bootstrap();
