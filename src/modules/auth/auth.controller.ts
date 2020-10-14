@@ -9,12 +9,12 @@ export class AuthController {
   constructor(
     private readonly loginService: LoginService,
     private readonly forgotPasswordService: ForgotPasswordService,
-  ) { }
+  ) {}
 
   @Post('login')
   public async Login(@Body() account: LoginDto) {
     const res = await this.loginService.Login(account);
-    console.log(res)
+    console.log(res);
     return res.error
       ? { ...res, status: HttpStatus.UNAUTHORIZED }
       : { token: res, success: 'ok' };
@@ -22,8 +22,8 @@ export class AuthController {
 
   @Post('request-forgot-password')
   public async RequesForgotPassword(@Body() account: ForgotPasswordDto) {
-    const res = await this.forgotPasswordService.RequestForgotPassword(account)
-    return (res?.error)
+    const res = await this.forgotPasswordService.RequestForgotPassword(account);
+    return res?.error
       ? { ...res, status: HttpStatus.CONFLICT }
       : { ...res, detail: 'MAIL_SEND' };
   }
@@ -31,7 +31,7 @@ export class AuthController {
   @Put('forgot-password')
   public async ForgotPassword(@Body() forgot: UpdatePasswordDto) {
     const res = await this.forgotPasswordService.ForgotPassword(forgot);
-    return (res?.error)
+    return res?.error
       ? { ...res, status: HttpStatus.CONFLICT }
       : { ...res, detail: 'PASSWORD_UPDATE!' };
   }
