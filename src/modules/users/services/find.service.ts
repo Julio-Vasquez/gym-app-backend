@@ -12,22 +12,28 @@ export class FindService {
   ) {}
 
   public async findByIdentification(identification: number) {
-    const res = await this.peopleRepository.findOne({
-      where: { identification: identification },
-      select: [
+    const res = await this.peopleRepository
+      .createQueryBuilder('people')
+      .select([
         'name',
         'lastName',
         'phone',
         'identification',
-        'dateBirth',
-        'gender',
-      ],
-    });
+        "CONCAT(dateBirth,'') as dateBirth",
+        'suscription.days AS time',
+        'suscription.end AS end',
+        'suscription.state AS state',
+      ])
+      .leftJoin('people.suscription', 'suscription')
+      .where('people.identification = :identification', {
+        identification: identification,
+      })
+      .execute();
 
-    if (!res || res.name.length < 1)
+    if (!res || res[0].name.length < 1)
       return { error: 'NO_CLIENT', detail: 'No records of clients' };
 
-    return res;
+    return res[0];
   }
 
   public async findByRoles(role: string) {
@@ -40,9 +46,8 @@ export class FindService {
         'lastName',
         'phone',
         'identification',
-        'dateBirth',
-        'suscription.state AS state',
-        'suscription.end AS end',
+        "COALESCE(suscription.state, ' ') AS state",
+        "CONCAT(suscription.end,'') AS end",
       ])
       .leftJoin('people.suscription', 'suscription')
       .where('people.role = :role', { role: rol })
