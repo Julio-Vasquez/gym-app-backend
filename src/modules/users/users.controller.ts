@@ -13,6 +13,7 @@ import {
 import { JwtService } from '@nestjs/jwt';
 
 import { PersonDto } from './dto/person.dto';
+import { UpdatePersonDto } from './dto/updateperson.dto';
 import { CreateService } from './services/create.service';
 import { FindService } from './services/find.service';
 import { UpdateService } from './services/update.service';
@@ -70,17 +71,22 @@ export class UsersController {
   }
 
   @Put('update')
-  public async UpdatePerson(@Body() newPerson: PersonDto, @Request() req) {
+  public async UpdatePerson(
+    @Body() newPerson: UpdatePersonDto,
+    @Request() req,
+  ) {
     const user: any = this.jwt.decode(
       req.headers['authorization'].split(' ')[1],
     );
-    console.log(user.res.username);
+
     const res = await this.updateService.UpdatePerson(
       newPerson,
       user.res.username,
+      req.body.oldId,
     );
+
     return res.error
       ? { ...res, status: HttpStatus.NO_CONTENT }
-      : { ...res, detail: 'Sucessful update' };
+      : { ...res, detail: 'Actualización Correcta' };
   }
 }

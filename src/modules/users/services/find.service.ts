@@ -19,6 +19,7 @@ export class FindService {
         'lastName',
         'phone',
         'identification',
+        'role',
         "CONCAT(dateBirth,'') as dateBirth",
         'suscription.days AS time',
         'suscription.end AS end',
@@ -30,7 +31,9 @@ export class FindService {
       })
       .execute();
 
-    if (!res || res[0].name.length < 1)
+    console.log(res[0]);
+
+    if (!res[0] || res[0].name.length < 1)
       return { error: 'NO_CLIENT', detail: 'No records of clients' };
 
     return res[0];

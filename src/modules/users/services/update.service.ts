@@ -3,8 +3,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, getManager } from 'typeorm';
 
 import { People } from 'src/entities/users/people.entity';
-import { PersonDto } from '../dto/person.dto';
 import { UpdateUser } from 'src/entities/audits/updateuser.entity';
+import { UpdatePersonDto } from '../dto/updateperson.dto';
 
 @Injectable()
 export class UpdateService {
@@ -15,17 +15,37 @@ export class UpdateService {
     private readonly updateUserAuditsRepository: Repository<UpdateUser>,
   ) {}
 
-  public async UpdatePerson(newClient: PersonDto, user: string) {
+  public async UpdatePerson(
+    newClient: UpdatePersonDto,
+    user: string,
+    oldIdentification: number,
+  ) {
     const isExists = await this.peopleRepository.findOne({
-      where: { identification: newClient.identification },
+      where: { identification: oldIdentification },
     });
 
     if (!isExists)
-      return { error: 'NO_EXISTS_PERSON', detail: 'No records of person' };
+      return { error: 'NO_EXISTS_PERSON', detail: 'Sin registros de persona' };
+
+    const duplicate = await this.peopleRepository.findOne({
+      where: { identification: newClient.identification },
+    });
+
+    if (duplicate)
+      return {
+        error: 'DUPLICATE_USER',
+        detail: 'Ese numero de identificacion pertenece a otra perosna',
+      };
 
     const newPerson = await this.peopleRepository.update(
-      { identification: newClient.identification },
-      { ...newClient },
+      { identification: oldIdentification },
+      {
+        name: newClient.name,
+        lastName: newClient.lastName,
+        identification: newClient.identification,
+        phone: newClient.phone,
+        role: newClient.role,
+      },
     );
 
     const personUpdate = await this.peopleRepository.findOne(isExists.id);
@@ -38,6 +58,6 @@ export class UpdateService {
 
     return newPerson.affected > 0
       ? { success: 'ok' }
-      : { error: 'ERROR_UPDATE', detail: 'update process failed' };
+      : { error: 'ERROR_UPDATE', detail: 'Proceso de actualización fallida' };
   }
 }
