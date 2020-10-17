@@ -13,9 +13,4 @@ export class PayDto {
   @IsNotEmpty()
   @Length(6, 14)
   readonly identification: number;
-
-  @IsString()
-  @IsNotEmpty()
-  @Length(4, 50)
-  readonly username: string
 }

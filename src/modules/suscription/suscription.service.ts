@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, Connection } from 'typeorm';
-import { randomStringGenerator } from '@nestjs/common/utils/random-string-generator.util'
+import { randomStringGenerator } from '@nestjs/common/utils/random-string-generator.util';
 
 import { PayDto } from './dto/pay.dto';
 import { Suscription } from 'src/entities/users/suscription.entity';
@@ -20,20 +20,23 @@ export class PaymentsService {
     private readonly auditCreateSuscription: Repository<CreateSuscription>,
     @InjectRepository(UpdateSuscription)
     private readonly auditUpdateSuscription: Repository<UpdateSuscription>,
-    private readonly connection: Connection
-  ) { }
+    private readonly connection: Connection,
+  ) {}
 
-  public async Pay(pay: PayDto) {
+  public async Pay(pay: PayDto, username: string) {
     const user = await this.peopleRepository.findOne({
-      select: ["id"],
-      where: { identification: pay.identification }
+      select: ['id', 'name'],
+      where: { identification: pay.identification },
     });
 
-    if (!user) return { error: 'NO_EXISTS_USER', detail: 'No existe el usuario' };
+    console.log(user);
+
+    if (!user)
+      return { error: 'NO_EXISTS_USER', detail: 'No existe el usuario' };
     const { id } = user;
 
     const suscription = await this.suscriptionRepository.findOne({
-      where: { people: id }
+      where: { people: id },
     });
 
     const queryRunner = this.connection.createQueryRunner();
@@ -81,22 +84,22 @@ export class PaymentsService {
             '${insertId}',
             ${pay.cost},
             ${pay.days},
-            '${pay.username}',
+            '${username}',
             '${id}'
           );
         `);
         await queryRunner.commitTransaction();
         const currenInsert = await this.suscriptionRepository.findOne({
-          where: { id: insertId }
-        })
+          where: { id: insertId },
+        });
         await this.auditCreateSuscription.save({
-          username: pay.username,
-          data: currenInsert
-        })
+          username: username,
+          data: currenInsert,
+        });
         return { success: 'ok' };
       } catch (error) {
         await queryRunner.rollbackTransaction();
-        return { error: 'FAILED_TRANSATION', detail: error }
+        return { error: 'FAILED_TRANSATION', detail: error };
       } finally {
         queryRunner.release();
         return { success: 'ok' };
@@ -131,32 +134,34 @@ export class PaymentsService {
           '${randomStringGenerator()}',
           ${pay.cost},
           ${pay.days},
-          '${pay.username}',
+          '${username}',
           '${id}'
         );
         `);
         await queryRunner.commitTransaction();
 
-        const updateSuscriptionReady = await this.suscriptionRepository.findOne({
-          where: { id: suscription.id }
-        });
+        const updateSuscriptionReady = await this.suscriptionRepository.findOne(
+          {
+            where: { id: suscription.id },
+          },
+        );
 
         await this.auditUpdateSuscription.save({
-          username: pay.username,
+          username: username,
           oldData: suscription,
-          newData: updateSuscriptionReady
+          newData: updateSuscriptionReady,
         });
 
         return { success: 'ok' };
       } catch (error) {
         await queryRunner.rollbackTransaction();
-        return { error: 'FAILED_TRANSATION', detail: error }
+        return { error: 'FAILED_TRANSATION', detail: error };
       } finally {
         queryRunner.release();
         return { success: 'ok' };
       }
-
-    } else if (suscription.state === 'inactive') {//inactiva
+    } else if (suscription.state === 'inactive') {
+      //inactiva
       try {
         await queryRunner.query(`
           UPDATE
@@ -184,27 +189,29 @@ export class PaymentsService {
             '${randomStringGenerator()}',
             ${pay.cost},
             ${pay.days},
-            '${pay.username}',
+            '${username}',
             '${id}'
           );
 
         `);
         await queryRunner.commitTransaction();
 
-        const updateSuscriptionReady = await this.suscriptionRepository.findOne({
-          where: { id: suscription.id }
-        });
+        const updateSuscriptionReady = await this.suscriptionRepository.findOne(
+          {
+            where: { id: suscription.id },
+          },
+        );
 
         await this.auditUpdateSuscription.save({
-          username: pay.username,
+          username: username,
           oldData: suscription,
-          newData: updateSuscriptionReady
+          newData: updateSuscriptionReady,
         });
 
         return { success: 'ok' };
       } catch (error) {
         await queryRunner.rollbackTransaction();
-        return { error: 'FAILED_TRANSATION', detail: error }
+        return { error: 'FAILED_TRANSATION', detail: error };
       } finally {
         queryRunner.release();
         return { success: 'ok' };
