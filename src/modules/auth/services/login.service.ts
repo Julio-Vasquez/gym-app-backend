@@ -14,7 +14,7 @@ export class LoginService {
     @InjectRepository(User)
     private readonly repositoryUser: Repository<User>,
     private readonly jwtService: JwtService,
-  ) { }
+  ) {}
 
   public async Login(account: LoginDto): Promise<User | any> {
     //const str: any = await HashPassword('pulido123');
@@ -24,12 +24,12 @@ export class LoginService {
       key: 'f6a3be4e-cec9-4088-a69c-f33c0d4dafc8'
     });*/
     /* const str: any = await HashPassword('pulido123');
-    */
-   //console.log(str);
+     */
+    //console.log(str);
     const response = await this.repositoryUser.findOne({
       where: { username: account.userName.toLowerCase() },
     });
-    console.log(response)
+    console.log(response);
     if (!response)
       return {
         error: 'NO_EXISTS_ACCOUNT',
@@ -49,7 +49,7 @@ export class LoginService {
         detail: 'No coincide la contraseña',
       };
 
-    const { password, ...res } = response;
+    const { password, id, ...res } = response;
 
     return this.jwtService.sign({ res });
   }
