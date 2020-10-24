@@ -5,7 +5,8 @@ import {
   OneToOne,
   Index,
   CreateDateColumn,
-  UpdateDateColumn, OneToMany
+  UpdateDateColumn,
+  OneToMany,
 } from 'typeorm';
 
 import { User } from './user.entity';
@@ -28,8 +29,8 @@ export class People {
   @Column('bigint', { nullable: false })
   identification: number;
 
-  @Column('date')
-  dateBirth: string;
+  @Column('date', { nullable: true, default: null })
+  dateBirth?: string;
 
   @Column('bigint', { nullable: false })
   phone: number;
@@ -55,13 +56,19 @@ export class People {
   @OneToOne(
     type => User,
     user => user.people,
-    { nullable: false }
+    { nullable: false },
   )
   user: User;
 
-  @OneToMany(type => Suscription, suscription => suscription.people)
+  @OneToMany(
+    type => Suscription,
+    suscription => suscription.people,
+  )
   suscription: Suscription[];
 
-  @OneToMany(type => Payment, payment => payment.people)
+  @OneToMany(
+    type => Payment,
+    payment => payment.people,
+  )
   payment: Payment[];
 }

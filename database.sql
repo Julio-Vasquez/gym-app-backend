@@ -2,12 +2,14 @@ CREATE DATABASE gymdb;
 
 SET GLOBAL event_scheduler = ON;
 
+DELIMITER //
+
 CREATE PROCEDURE procedure_check_suscription()
 BEGIN
 	DECLARE done INT DEFAULT FALSE;
   DECLARE idsuscription VARCHAR(36);
   DECLARE endtime DATE;
-  DECLARE cur1 CURSOR FOR SELECT id, end FROM gymdb.suscription;
+  DECLARE cur1 CURSOR FOR SELECT id, end FROM gymdb.suscription WHERE state = 'active';
   DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
 
   OPEN cur1;

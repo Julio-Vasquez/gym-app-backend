@@ -26,6 +26,12 @@ export class CreateService {
         detail: 'El cliente que desea crear ya está registrado',
       };
 
+    if (newClient.dateBirth === '') {
+      newClient = { ...newClient, dateBirth: null };
+    }
+
+    console.log(newClient);
+
     const client = await this.peopleRepository.save({
       ...newClient,
     });

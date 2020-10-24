@@ -2,10 +2,10 @@ import {
   IsString,
   IsNotEmpty,
   Length,
-  IsISO8601,
   IsPhoneNumber,
   IsEnum,
   IsNumberString,
+  IsOptional,
 } from 'class-validator';
 import { Genders, Roles } from '../../../entities/enums';
 
@@ -24,9 +24,8 @@ export class PersonDto {
   @Length(6, 12)
   readonly identification: number;
 
-  @IsISO8601()
-  @IsNotEmpty()
-  readonly dateBirth: string;
+  @IsOptional()
+  readonly dateBirth?: string;
 
   @IsPhoneNumber('CO')
   @IsNotEmpty()

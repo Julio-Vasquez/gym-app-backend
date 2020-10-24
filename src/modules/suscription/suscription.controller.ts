@@ -21,6 +21,6 @@ export class SuscriptionController {
 
     return res?.error
       ? { ...res, status: HttpStatus.CONFLICT }
-      : { ...res, detail: 'Suscripcion modificada' };
+      : { ...res, payload: 'Suscripcion modificada' };
   }
 }
