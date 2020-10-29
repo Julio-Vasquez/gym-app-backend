@@ -10,12 +10,12 @@ export class ReportsController {
   public async PaysByIdentification(@Param('id', ParseIntPipe) id: number) {
     const res = await this.reportService.PaysByIdentification(id);
 
-    return res! ? { success: 'OK', ...res } : { ...res, f: 'F' };
+    return res!?.error ? { ...res } : { success: 'OK', ...res };
   }
 
   @Get('pays')
   public async PaysByDates(@Query() dates: DatesDto) {
     const res = await this.reportService.PaysByDates(dates);
-    return res!?.error ? { ...res, f: 'F' } : res;
+    return res!?.error ? { ...res, f: 'F' } : { success: 'OK', ...res };
   }
 }
