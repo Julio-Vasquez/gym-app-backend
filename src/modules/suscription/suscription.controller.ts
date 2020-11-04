@@ -17,10 +17,26 @@ export class SuscriptionController {
     const user: any = this.jwt.decode(
       req.headers['authorization'].split(' ')[1],
     );
-    const res = await this.paymentsService.Pay(pay, user.res.username);
 
-    return res?.error
-      ? { ...res, status: HttpStatus.CONFLICT }
-      : { ...res, payload: 'Suscripcion modificada' };
+    if (pay.concept === 'Mensual') {
+      const res = await this.paymentsService.MonthlyPayment(
+        pay,
+        user.res.username,
+      );
+
+      return res?.error
+        ? { ...res, status: HttpStatus.CONFLICT }
+        : { ...res, payload: 'Suscripcion modificada' };
+    } else {
+      console.log('soy el else');
+      console.log(pay);
+      const res: any = await this.paymentsService.TicketHolderPayment(
+        pay,
+        user.res.username,
+      );
+      return res?.error
+        ? { ...res, status: HttpStatus.CONFLICT }
+        : { ...res, payload: 'Suscripcion modificada' };
+    }
   }
 }

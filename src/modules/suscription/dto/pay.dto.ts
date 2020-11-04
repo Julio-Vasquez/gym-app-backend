@@ -1,4 +1,5 @@
-import { IsNotEmpty, Length, IsNumberString, IsString } from 'class-validator';
+import { IsNotEmpty, Length, IsNumberString, IsEnum } from 'class-validator';
+import { Concept } from 'src/entities/enums';
 
 export class PayDto {
   @IsNumberString()
@@ -13,4 +14,7 @@ export class PayDto {
   @IsNotEmpty()
   @Length(6, 14)
   readonly identification: number;
+
+  @IsEnum(Concept)
+  readonly concept: string;
 }
