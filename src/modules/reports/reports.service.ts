@@ -21,11 +21,13 @@ export class ReportsService {
         'people.name',
         'people.lastName',
         'people.identification',
+        'payment.createdAt',
         'payment.cost',
+        'payment.concept',
         'payment.days',
         'payment.username',
       ])
-      .leftJoin('people.payment', 'payment')
+      .innerJoin('people.payment', 'payment')
       .where('people.identification = :id', {
         id: identification,
       })
@@ -47,6 +49,8 @@ export class ReportsService {
         'people.name',
         'people.lastName',
         'people.identification',
+        'payment.createdAt',
+        'payment.concept',
         'payment.cost',
         'payment.days',
         'payment.username',
