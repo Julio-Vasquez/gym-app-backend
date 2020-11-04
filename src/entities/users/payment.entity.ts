@@ -4,8 +4,9 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   JoinColumn,
-  ManyToOne
+  ManyToOne,
 } from 'typeorm';
+import { Concept } from '../enums';
 
 import { People } from '../users/people.entity';
 
@@ -20,6 +21,13 @@ export class Payment {
   @Column('int', { nullable: false })
   days: number;
 
+  @Column('enum', {
+    enum: Concept,
+    nullable: false,
+    default: Concept.Men,
+  })
+  concept: string;
+
   @CreateDateColumn({ type: 'timestamp', name: 'created_at' })
   createdAt: Date;
 
@@ -32,9 +40,8 @@ export class Payment {
   @ManyToOne(
     type => People,
     people => people.payment,
-    { nullable: false }
+    { nullable: false },
   )
   @JoinColumn({ name: 'fk_people' })
-
   people: People;
 }

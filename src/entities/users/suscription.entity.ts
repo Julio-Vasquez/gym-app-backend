@@ -5,9 +5,9 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   ManyToOne,
-  JoinColumn
+  JoinColumn,
 } from 'typeorm';
-import { States } from '../enums';
+import { States, Concept } from '../enums';
 import { People } from './people.entity';
 
 @Entity('suscription')
@@ -27,6 +27,13 @@ export class Suscription {
   @Column('date', { nullable: false })
   end: string;
 
+  @Column('enum', {
+    enum: Concept,
+    nullable: false,
+    default: Concept.Men,
+  })
+  concept: string;
+
   @Column('enum', { enum: States, default: States.Active })
   state: States;
 
@@ -40,10 +47,9 @@ export class Suscription {
     type => People,
     people => people.suscription,
     {
-      nullable: false
-    }
+      nullable: false,
+    },
   )
   @JoinColumn({ name: 'fk_people' })
   people: People;
-
 }
