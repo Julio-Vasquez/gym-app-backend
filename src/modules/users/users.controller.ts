@@ -42,6 +42,21 @@ export class UsersController {
       : { payload: res, success: 'ok' };
   }
 
+  @Get('find-in-:identification')
+  public async ListCLientsIdIn(
+    @Param('identification', ParseIntPipe) identification: number,
+  ) {
+    if (!identification || identification < 0) {
+      throw new HttpException('Bad_Request', HttpStatus.BAD_REQUEST);
+    }
+    const res: any = await this.findService.findByIdentificationIn(
+      identification,
+    );
+    return res.error
+      ? { ...res, status: HttpStatus.NO_CONTENT }
+      : { payload: res, success: 'ok' };
+  }
+
   @Get('find/:role')
   public async ListCLientsRole(@Param('role') role: string) {
     if (!role || role.length < 0) {

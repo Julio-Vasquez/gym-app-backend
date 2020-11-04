@@ -3,12 +3,16 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
 import { People } from 'src/entities/users/people.entity';
+import { Concept } from 'src/entities/enums';
+import { Suscription } from 'src/entities/users/suscription.entity';
 
 @Injectable()
 export class FindService {
   constructor(
     @InjectRepository(People)
     private readonly peopleRepository: Repository<People>,
+    @InjectRepository(Suscription)
+    private readonly suscriptionRepository: Repository<Suscription>,
   ) {}
 
   public async findByIdentification(identification: number) {
@@ -21,6 +25,7 @@ export class FindService {
         'identification',
         'role',
         "CONCAT(dateBirth,'') as dateBirth",
+        'suscription.concept as concept',
         'suscription.days AS time',
         'suscription.end AS end',
         'suscription.state AS state',
@@ -35,6 +40,58 @@ export class FindService {
 
     if (!res[0] || res[0].name.length < 1)
       return { error: 'NO_CLIENT', detail: 'No records of clients' };
+
+    return res[0];
+  }
+
+  public async findByIdentificationIn(identification: number) {
+    const res = await this.peopleRepository
+      .createQueryBuilder('people')
+      .select([
+        'name',
+        'lastName',
+        'phone',
+        'identification',
+        'role',
+        "CONCAT(dateBirth,'') as dateBirth",
+        'suscription.days AS time',
+        'suscription.end AS end',
+        'suscription.concept as concept',
+        'suscription.updatedAt as upd',
+        'suscription.state AS state',
+      ])
+      .leftJoin('people.suscription', 'suscription')
+      .where('people.identification = :identification', {
+        identification: identification,
+      })
+      .execute();
+
+    console.log(res[0]);
+
+    if (!res[0] || res[0].name.length < 1)
+      return { error: 'NO_CLIENT', detail: 'No records of clients' };
+
+    if (res[0].concept === Concept.Tiq && res[0].time > 0) {
+      const userDate = new Date(`${res[0].upd}`).toISOString().slice(0, 10),
+        currentDate = new Date().toISOString().slice(0, 10);
+      console.log(userDate, currentDate);
+      if (userDate < currentDate) {
+        const idPeople = await this.peopleRepository.findOne({
+          where: { identification: res[0].identification },
+        });
+        const updateSuscription = await this.suscriptionRepository.update(
+          { people: idPeople },
+          { days: res[0].time - 1 },
+        );
+
+        if (updateSuscription.affected > 0) return res[0];
+        else
+          return {
+            error: 'Error',
+            detail: 'No se pudo actualizar la tiquetera',
+          };
+      }
+    }
 
     return res[0];
   }
