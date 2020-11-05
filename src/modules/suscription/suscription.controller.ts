@@ -4,6 +4,7 @@ import { JwtService } from '@nestjs/jwt';
 import { PaymentsService } from './suscription.service';
 
 import { PayDto } from './dto/pay.dto';
+import { RemoveDto } from './dto/remove.dto';
 
 @Controller('suscription')
 export class SuscriptionController {
@@ -38,5 +39,19 @@ export class SuscriptionController {
         ? { ...res, status: HttpStatus.CONFLICT }
         : { ...res, payload: 'Suscripcion modificada' };
     }
+  }
+
+  @Post('remove')
+  public async RemoveTime(@Body() remove: RemoveDto, @Request() req) {
+    const user: any = this.jwt.decode(
+      req.headers['authorization'].split(' ')[1],
+    );
+    const res = await this.paymentsService.RemoveTime(
+      remove,
+      user.res.username,
+    );
+    return res?.error
+      ? { ...res, status: HttpStatus.CONFLICT }
+      : { ...res, payload: 'Suscripcion modificada' };
   }
 }

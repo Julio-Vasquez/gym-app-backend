@@ -9,6 +9,7 @@ import { People } from 'src/entities/users/people.entity';
 import { CreateSuscription } from 'src/entities/audits/createsuscription.entity';
 import { UpdateSuscription } from 'src/entities/audits/updatesuscription.entity';
 import { Concept } from 'src/entities/enums';
+import { RemoveDto } from './dto/remove.dto';
 
 @Injectable()
 export class PaymentsService {
@@ -430,6 +431,122 @@ export class PaymentsService {
         queryRunner.release();
         return { success: 'ok' };
       }
+    }
+  }
+
+  public async RemoveTime(remove: RemoveDto, username: string) {
+    const user = await this.peopleRepository.findOne({
+      select: ['id', 'name'],
+      where: { identification: remove.identification },
+    });
+
+    console.log(user);
+
+    if (!user)
+      return { error: 'NO_EXISTS_USER', detail: 'No existe el usuario' };
+    const { id } = user;
+
+    const suscription = await this.suscriptionRepository.findOne({
+      where: { people: id },
+    });
+
+    if (!suscription || suscription.state === 'inactive')
+      return {
+        error: 'NO_SUSCRIPTION',
+        detail: 'No hay una suscripcion activa',
+      };
+
+    const queryRunner = this.connection.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+    console.log(remove.days == suscription.days);
+
+    if (remove.days < suscription.days) {
+      let newDays = suscription.days - remove.days;
+      try {
+        if (suscription.concept === Concept.Men) {
+          await queryRunner.query(`
+          UPDATE
+            suscription
+          SET
+            days = ${newDays},
+            end = DATE_ADD('${suscription.end}',INTERVAL -${remove.days} DAY)
+          WHERE
+            id = '${suscription.id}'
+        `);
+        } else {
+          await queryRunner.query(`
+          UPDATE
+            suscription
+          SET
+            days = ${newDays}
+          WHERE
+            id = '${suscription.id}'
+        `);
+        }
+
+        await queryRunner.commitTransaction();
+
+        const updateSuscriptionReady = await this.suscriptionRepository.findOne(
+          {
+            where: { id: suscription.id },
+          },
+        );
+
+        await this.auditUpdateSuscription.save({
+          username: username,
+          oldData: suscription,
+          newData: updateSuscriptionReady,
+        });
+
+        return { success: 'ok' };
+      } catch (error) {
+        await queryRunner.rollbackTransaction();
+        return { error: 'FAILED_TRANSATION', detail: error };
+      } finally {
+        queryRunner.release();
+        return { success: 'ok' };
+      }
+    } else if (remove.days == suscription.days) {
+      try {
+        await queryRunner.query(`
+          UPDATE
+            suscription
+          SET
+            days = 0,
+            end = CURRENT_DATE(),
+            state= 'inactive'
+          WHERE
+            id = '${suscription.id}'
+        `);
+
+        await queryRunner.commitTransaction();
+
+        const updateSuscriptionReady = await this.suscriptionRepository.findOne(
+          {
+            where: { id: suscription.id },
+          },
+        );
+
+        await this.auditUpdateSuscription.save({
+          username: username,
+          oldData: suscription,
+          newData: updateSuscriptionReady,
+        });
+
+        return { success: 'ok' };
+      } catch (error) {
+        await queryRunner.rollbackTransaction();
+        return { error: 'FAILED_TRANSATION', detail: error };
+      } finally {
+        queryRunner.release();
+        return { success: 'ok' };
+      }
+    } else {
+      return {
+        error: 'NO_TIME',
+        detail: 'El tiempo que desea quitar es superior al tiempo acitvo',
+      };
     }
   }
 }
