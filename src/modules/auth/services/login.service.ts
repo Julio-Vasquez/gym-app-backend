@@ -29,7 +29,7 @@ export class LoginService {
     const response = await this.repositoryUser.findOne({
       where: { username: account.userName.toLowerCase() },
     });
-    console.log(response);
+
     if (!response)
       return {
         error: 'NO_EXISTS_ACCOUNT',

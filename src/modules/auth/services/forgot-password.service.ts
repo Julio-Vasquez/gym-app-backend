@@ -89,7 +89,6 @@ export class ForgotPasswordService {
       },
     });
 
-    console.log(currentUser);
     if (!currentUser)
       return {
         error: 'NO_EXIST_USER',

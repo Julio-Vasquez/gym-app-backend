@@ -13,8 +13,6 @@ export class ReportsService {
   ) {}
 
   public async PaysByIdentification(identification: number): Promise<any> {
-    console.log(identification);
-
     const res = await this.peopleRepository
       .createQueryBuilder('people')
       .select([

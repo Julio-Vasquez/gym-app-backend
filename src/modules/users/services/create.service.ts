@@ -30,8 +30,6 @@ export class CreateService {
       newClient = { ...newClient, dateBirth: null };
     }
 
-    console.log(newClient);
-
     const client = await this.peopleRepository.save({
       ...newClient,
     });

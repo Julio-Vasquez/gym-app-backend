@@ -70,11 +70,9 @@ export class UsersController {
 
   @Post('create')
   public async CreateClient(@Body() newClient: PersonDto, @Request() req) {
-    //console.log(req.headers['authorization'].split(' ')[1]);
     const user: any = this.jwt.decode(
       req.headers['authorization'].split(' ')[1],
     );
-    console.log(user.res.username);
 
     const res = await this.createService.CreateNewClient(
       newClient,

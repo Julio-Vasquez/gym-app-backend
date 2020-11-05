@@ -31,8 +31,6 @@ export class PaymentsService {
       where: { identification: pay.identification },
     });
 
-    console.log(user);
-
     if (!user)
       return { error: 'NO_EXISTS_USER', detail: 'No existe el usuario' };
     const { id } = user;
@@ -236,8 +234,6 @@ export class PaymentsService {
       where: { identification: pay.identification },
     });
 
-    console.log(user);
-
     if (!user)
       return { error: 'NO_EXISTS_USER', detail: 'No existe el usuario' };
     const { id } = user;
@@ -440,8 +436,6 @@ export class PaymentsService {
       where: { identification: remove.identification },
     });
 
-    console.log(user);
-
     if (!user)
       return { error: 'NO_EXISTS_USER', detail: 'No existe el usuario' };
     const { id } = user;
@@ -459,7 +453,6 @@ export class PaymentsService {
     const queryRunner = this.connection.createQueryRunner();
     await queryRunner.connect();
     await queryRunner.startTransaction();
-    console.log(remove.days == suscription.days);
 
     if (remove.days < suscription.days) {
       let newDays = suscription.days - remove.days;

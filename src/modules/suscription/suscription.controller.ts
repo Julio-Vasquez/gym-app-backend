@@ -29,8 +29,6 @@ export class SuscriptionController {
         ? { ...res, status: HttpStatus.CONFLICT }
         : { ...res, payload: 'Suscripcion modificada' };
     } else {
-      console.log('soy el else');
-      console.log(pay);
       const res: any = await this.paymentsService.TicketHolderPayment(
         pay,
         user.res.username,
