@@ -14,16 +14,6 @@ const PEOPLES = [
     gender: 'Masculino',
     role: 'Admin',
   },
-  {
-    id: 'c1f8dd00-7aad-437e-8029-b44faa06f107',
-    name: 'Carlos',
-    lastName: 'Rojas',
-    identification: 12345,
-    dateBirth: '1990-02-01',
-    phone: 3143516887,
-    gender: 'Masculino',
-    role: 'Admin',
-  },
 ];
 
 export class PeopleDefault {

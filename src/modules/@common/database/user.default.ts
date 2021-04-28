@@ -12,14 +12,6 @@ const USERS = [
     mail: 'lucho9515baco@gmail.com',
     people: '7c556aca-72ba-4d3d-8f0e-dd57ff0869ef',
   },
-  {
-    id: 'c66446ad-e580-433a-a7d1-22350a8b57f8',
-    username: 'carlos'.toLowerCase(),
-    password: '45150491151111081149799964951504911511110811497994',
-    key: 'e5552f6a-bf3b-4205-a0c5-070a99fe8c82',
-    mail: 'crojas02@outlook.com',
-    people: 'c1f8dd00-7aad-437e-8029-b44faa06f107',
-  },
 ];
 export class UserDefault {
   constructor(
