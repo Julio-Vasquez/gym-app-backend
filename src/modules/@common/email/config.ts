@@ -2,8 +2,8 @@ import { createTransport } from 'nodemailer';
 
 export class ConfigMail {
   public GetConfig() {
-    const MAIL = 'fernandopulido473@gmail.com',
-      PWD = 'pulido1995.';
+    const MAIL = 'Apologym4@gmail.com',
+      PWD = 'apologym1995';
 
     return createTransport({
       service: 'gmail',

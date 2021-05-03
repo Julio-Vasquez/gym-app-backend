@@ -22,7 +22,7 @@ export const ResetPasswordMail = (
         </head>
         <body>
             <span class="preheader">
-                Use este link para restaurar su contraseña. Este link es valido solo por 25 minutos.
+                Use este link para restaurar su contraseña. Este link es valido solo por 30 minutos.
             </span>
             <table
                 class="email-wrapper"
@@ -72,7 +72,8 @@ export const ResetPasswordMail = (
                                                     <img
                                                         src="https://i.ibb.co/HKZwnKb/il-password-reset-2x.png" height="auto" style="border: 0; outline: none; text-decoration: none; vertical-align: bottom; max-width:1200px; padding-bottom: 0; display: inline!important; vertical-align: bottom; margin-top: -75px;"
                                                     width="600"" />
-                                                    <h1>Hola ${user},</h1>
+                                                    <h1>Hola ${user.toUpperCase()}
+                                                      ,</h1>
                                                     <p>
                                                         Recientemente solicitó restablecer la contraseña de su
                                                         cuenta. Use el botón de abajo para restablecerlo.

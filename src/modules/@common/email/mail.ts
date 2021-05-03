@@ -8,8 +8,8 @@ export class Mail {
 
   constructor() {
     this.config = new ConfigMail();
-    this.company = 'Mind Body';
-    this.email = 'fernandopulido473@gmail.com';
+    this.company = 'Apolo Gym';
+    this.email = 'Apologym4@gmail.com';
   }
 
   public async SendMultipleEMail(dest: string[], sub: string, txt: string) {
