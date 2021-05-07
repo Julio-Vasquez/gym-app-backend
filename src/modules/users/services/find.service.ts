@@ -37,12 +37,12 @@ export class FindService {
       .execute();
 
     if (!res[0] || res[0].name.length < 1)
-      return { error: 'NO_CLIENT', detail: 'No records of clients' };
+      return { error: 'NO_CLIENT', detail: 'No hay resultados de clientes' };
 
     return res[0];
   }
 
-  public async findByIdentificationIn(identification: number) {
+  public async findByIdentificationEntry(identification: number) {
     const res = await this.peopleRepository
       .createQueryBuilder('people')
       .select([
@@ -65,7 +65,7 @@ export class FindService {
       .execute();
 
     if (!res[0] || res[0].name.length < 1)
-      return { error: 'NO_CLIENT', detail: 'No records of clients' };
+      return { error: 'NO_CLIENT', detail: 'No hay resultados de clientes' };
 
     if (res[0].concept === Concept.Tiq && res[0].time > 0) {
       const userDate = new Date(`${res[0].upd}`).toISOString().slice(0, 10),
@@ -75,6 +75,7 @@ export class FindService {
         const idPeople = await this.peopleRepository.findOne({
           where: { identification: res[0].identification },
         });
+
         const updateSuscription = await this.suscriptionRepository.update(
           { people: idPeople },
           { days: res[0].time - 1 },
@@ -110,7 +111,7 @@ export class FindService {
       .execute();
 
     if (!response || response.length < 1)
-      return { error: 'NO_DATA', detail: 'No records of clients' };
+      return { error: 'NO_DATA', detail: 'No hay resultados de clientes' };
 
     return response;
   }

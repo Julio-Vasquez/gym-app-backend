@@ -42,14 +42,15 @@ export class UsersController {
       : { payload: res, success: 'ok' };
   }
 
-  @Get('find-in-:identification')
+  //ingreso gym
+  @Get('find-entry-:identification')
   public async ListCLientsIdIn(
     @Param('identification', ParseIntPipe) identification: number,
   ) {
     if (!identification || identification < 0) {
       throw new HttpException('Bad_Request', HttpStatus.BAD_REQUEST);
     }
-    const res: any = await this.findService.findByIdentificationIn(
+    const res: any = await this.findService.findByIdentificationEntry(
       identification,
     );
     return res.error
