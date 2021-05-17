@@ -14,7 +14,7 @@ export class FindService {
     @InjectRepository(Suscription)
     private readonly suscriptionRepository: Repository<Suscription>,
   ) {}
-
+  //que se devuelva si debe o no
   public async findByIdentification(identification: number) {
     const res = await this.peopleRepository
       .createQueryBuilder('people')
@@ -41,7 +41,7 @@ export class FindService {
 
     return res[0];
   }
-
+  //que se devuelva si debe o no
   public async findByIdentificationEntry(identification: number) {
     const res = await this.peopleRepository
       .createQueryBuilder('people')

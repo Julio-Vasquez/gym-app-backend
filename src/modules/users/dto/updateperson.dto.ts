@@ -2,12 +2,11 @@ import {
   IsString,
   IsNotEmpty,
   Length,
-  IsISO8601,
   IsPhoneNumber,
   IsEnum,
   IsNumberString,
 } from 'class-validator';
-import { Genders, Roles } from '../../../entities/enums';
+import { Roles } from '../../../entities/enums';
 
 export class UpdatePersonDto {
   @IsNotEmpty()
@@ -27,6 +26,10 @@ export class UpdatePersonDto {
   @IsPhoneNumber('CO')
   @IsNotEmpty()
   readonly phone: number;
+
+  @IsNumberString()
+  @IsNotEmpty()
+  readonly debt: number;
 
   @IsNotEmpty()
   @IsString()

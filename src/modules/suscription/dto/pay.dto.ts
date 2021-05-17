@@ -12,6 +12,10 @@ export class PayDto {
 
   @IsNumberString()
   @IsNotEmpty()
+  readonly debt: number;
+
+  @IsNumberString()
+  @IsNotEmpty()
   @Length(6, 14)
   readonly identification: number;
 

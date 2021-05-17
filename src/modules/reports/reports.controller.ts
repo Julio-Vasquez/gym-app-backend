@@ -16,6 +16,6 @@ export class ReportsController {
   @Get('pays')
   public async PaysByDates(@Query() dates: DatesDto) {
     const res = await this.reportService.PaysByDates(dates);
-    return res!?.error ? { ...res, f: 'F' } : { success: 'OK', ...res };
+    return res!?.error ? { ...res } : { success: 'OK', data: [...res] };
   }
 }
