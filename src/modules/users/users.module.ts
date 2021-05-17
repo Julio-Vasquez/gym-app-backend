@@ -11,10 +11,17 @@ import { People } from '../../entities/users/people.entity';
 import { CreateUser } from 'src/entities/audits/createuser.entity';
 import { UpdateUser } from 'src/entities/audits/updateuser.entity';
 import { Suscription } from 'src/entities/users/suscription.entity';
+import { Payment } from 'src/entities/users/payment.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([People, CreateUser, UpdateUser, Suscription]),
+    TypeOrmModule.forFeature([
+      People,
+      CreateUser,
+      UpdateUser,
+      Suscription,
+      Payment,
+    ]),
     JwtModule.register({
       privateKey: 'asdadasdsa',
     }),

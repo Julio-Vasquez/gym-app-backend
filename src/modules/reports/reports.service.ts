@@ -21,6 +21,7 @@ export class ReportsService {
         'people.identification',
         'payment.createdAt',
         'payment.cost',
+        'payment.debt',
         'payment.concept',
         'payment.days',
         'payment.username',
@@ -50,6 +51,7 @@ export class ReportsService {
         'payment.createdAt',
         'payment.concept',
         'payment.cost',
+        'payment.debt',
         'payment.days',
         'payment.username',
       ])

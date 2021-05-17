@@ -18,6 +18,9 @@ export class Suscription {
   @Column('bigint', { nullable: false })
   cost: number;
 
+  @Column('int', { nullable: true })
+  debt: number;
+
   @Column('int', { nullable: false })
   days: number;
 

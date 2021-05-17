@@ -54,6 +54,7 @@ export class PaymentsService {
               id,
               cost,
               days,
+              debt,
               start,
               end,
               concept,
@@ -62,8 +63,9 @@ export class PaymentsService {
           VALUES
             (
               '${insertId}',
-              ${pay.cost},
+              ${pay.cost - pay.days},
               ${pay.days},
+              ${pay.debt},
               CURRENT_DATE(),
               DATE_ADD(CURRENT_DATE(), INTERVAL ${pay.days} DAY),
               '${Concept.Men}',
@@ -78,6 +80,7 @@ export class PaymentsService {
               id,
               cost,
               days,
+              debt,
               concept,
               username,
               fk_people
@@ -85,8 +88,9 @@ export class PaymentsService {
           VALUES
           (
             '${insertId}',
-            ${pay.cost},
+            ${pay.cost - pay.debt},
             ${pay.days},
+            ${pay.debt},
             '${Concept.Men}',
             '${username}',
             '${id}'
@@ -117,8 +121,9 @@ export class PaymentsService {
           UPDATE
             suscription
           SET
-            cost = ${pay.cost},
+            cost = ${pay.cost - pay.days},
             days = ${parseInt(pay.days.toString()) + suscription.days},
+            debt = ${pay.debt},
             end = DATE_ADD('${suscription.end}',INTERVAL ${pay.days} DAY)
           WHERE
             id = '${suscription.id}'
@@ -130,6 +135,7 @@ export class PaymentsService {
             id,
             cost,
             days,
+            debt,
             concept,
             username,
             fk_people
@@ -137,8 +143,9 @@ export class PaymentsService {
         VALUES
         (
           '${randomStringGenerator()}',
-          ${pay.cost},
+          ${pay.cost - pay.debt},
           ${pay.days},
+          ${pay.debt},
           '${Concept.Men}',
           '${username}',
           '${id}'
@@ -173,8 +180,9 @@ export class PaymentsService {
           UPDATE
             suscription
           SET
-            cost = ${pay.cost},
+            cost = ${pay.cost - pay.days},
             days = ${pay.days},
+            debt = ${pay.debt},
             end = DATE_ADD(CURRENT_DATE(),INTERVAL ${pay.days} DAY),
             concept = '${Concept.Men}',
             state = 'active'
@@ -188,6 +196,7 @@ export class PaymentsService {
               id,
               cost,
               days,
+              debt,
               concept,
               username,
               fk_people
@@ -195,8 +204,9 @@ export class PaymentsService {
           VALUES
           (
             '${randomStringGenerator()}',
-            ${pay.cost},
+            ${pay.cost - pay.debt},
             ${pay.days},
+            ${pay.debt},
             '${Concept.Men}',
             '${username}',
             '${id}'
@@ -256,6 +266,7 @@ export class PaymentsService {
               id,
               cost,
               days,
+              debt,
               start,
               end,
               concept,
@@ -264,8 +275,9 @@ export class PaymentsService {
           VALUES
             (
               '${insertId}',
-              ${pay.cost},
+              ${pay.cost - pay.days},
               ${pay.days},
+              ${pay.debt},
               CURRENT_DATE(),
               DATE_ADD(CURRENT_DATE(), INTERVAL 30 DAY),
               '${Concept.Tiq}',
@@ -280,6 +292,7 @@ export class PaymentsService {
               id,
               cost,
               days,
+              debt,
               concept,
               username,
               fk_people
@@ -287,8 +300,9 @@ export class PaymentsService {
           VALUES
           (
             '${insertId}',
-            ${pay.cost},
+            ${pay.cost - pay.debt},
             ${pay.days},
+            ${pay.debt},
             '${Concept.Tiq}',
             '${username}',
             '${id}'
@@ -319,8 +333,9 @@ export class PaymentsService {
           UPDATE
             suscription
           SET
-            cost = ${pay.cost},
+            cost = ${pay.cost - pay.days},
             days = ${parseInt(pay.days.toString()) + suscription.days},
+            debt = ${pay.debt},
             end = DATE_ADD('${suscription.end}',INTERVAL 30 DAY)
           WHERE
             id = '${suscription.id}'
@@ -332,6 +347,7 @@ export class PaymentsService {
             id,
             cost,
             days,
+            debt,
             concept,
             username,
             fk_people
@@ -339,8 +355,9 @@ export class PaymentsService {
         VALUES
         (
           '${randomStringGenerator()}',
-          ${pay.cost},
+          ${pay.cost - pay.debt},
           ${pay.days},
+          ${pay.debt},
           '${Concept.Tiq}',
           '${username}',
           '${id}'
@@ -375,8 +392,9 @@ export class PaymentsService {
           UPDATE
             suscription
           SET
-            cost = ${pay.cost},
+            cost = ${pay.cost - pay.days},
             days = ${pay.days},
+            debt = ${pay.debt},
             end = DATE_ADD(CURRENT_DATE(),INTERVAL 30 DAY),
             concept = '${Concept.Tiq}',
             state = 'active'
@@ -390,6 +408,7 @@ export class PaymentsService {
               id,
               cost,
               days,
+              debt,
               concept,
               username,
               fk_people
@@ -397,8 +416,9 @@ export class PaymentsService {
           VALUES
           (
             '${randomStringGenerator()}',
-            ${pay.cost},
+            ${pay.cost - pay.debt},
             ${pay.days},
+            ${pay.debt},
             '${Concept.Tiq}',
             '${username}',
             '${id}'
