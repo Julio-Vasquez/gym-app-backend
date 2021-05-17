@@ -52,7 +52,7 @@ export class UpdateService {
       },
     );
     //debia=20000 pago(client) 10000
-    if (newClient.debt < debtTemp.debt) {
+    if (newClient.debt < debtTemp.debt && newClient.debt > 0) {
       let t: number = debtTemp.debt - newClient.debt;
       await this.paymentRespository.save({
         concept: Concept.Abo,
