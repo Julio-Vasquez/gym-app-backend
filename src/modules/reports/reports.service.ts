@@ -48,6 +48,7 @@ export class ReportsService {
         'people.name',
         'people.lastName',
         'people.identification',
+        'people.role',
         'payment.createdAt',
         'payment.concept',
         'payment.cost',
