@@ -56,9 +56,9 @@ export class UpdateService {
       let t: number = debtTemp.debt - newClient.debt;
       await this.paymentRespository.save({
         concept: Concept.Abo,
-        cost: newClient.debt,
+        cost: t,
         days: 0,
-        debt: t,
+        debt: newClient.debt,
         username: user,
         people: isExists,
       });
