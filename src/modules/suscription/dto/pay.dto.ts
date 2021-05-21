@@ -10,7 +10,6 @@ export class PayDto {
   @IsNotEmpty()
   readonly days: number;
 
-  @IsNumberString()
   @IsNotEmpty()
   readonly debt: number;
 

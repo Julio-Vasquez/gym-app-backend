@@ -21,7 +21,7 @@ export class Payment {
   @Column('int', { nullable: false })
   days: number;
 
-  @Column('int', { nullable: true })
+  @Column('int', { nullable: true, default: 0 })
   debt: number;
 
   @Column('enum', {
