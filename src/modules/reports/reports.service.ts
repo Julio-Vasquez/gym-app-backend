@@ -30,6 +30,7 @@ export class ReportsService {
       .where('people.identification = :id', {
         id: identification,
       })
+      .orderBy('payment.createdAt', 'DESC')
       .getOne();
 
     if (!res)
@@ -61,6 +62,7 @@ export class ReportsService {
         dateOne: dates.start,
         dateTwo: dates.end,
       })
+      .orderBy('payment.createdAt', 'DESC')
       .getMany();
 
     if (!res || res.length < 1)
