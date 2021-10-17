@@ -13,7 +13,7 @@ import { JwtModule } from '@nestjs/jwt';
     JwtModule.register({
       privateKey: 'asdadasdsa',
       signOptions: {
-        expiresIn: 21600,
+        expiresIn: '12h',
       },
     }),
   ],

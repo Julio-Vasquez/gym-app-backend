@@ -27,7 +27,6 @@ export class UpdatePersonDto {
   @IsNotEmpty()
   readonly phone: number;
 
-  @IsNumberString()
   @IsNotEmpty()
   readonly debt: number;
 
