@@ -1,18 +1,16 @@
-import { createTransport } from 'nodemailer';
+import { createTransport } from 'nodemailer'
 
 export class ConfigMail {
   public GetConfig() {
-    const MAIL = 'Apologym4@gmail.com',
-      PWD = 'apologym1995';
-
     return createTransport({
       service: 'gmail',
+      host: 'smtp.gmail.com',
       port: 587,
       secure: true,
       auth: {
-        user: MAIL,
-        pass: PWD,
-      },
-    });
+        user: 'Apologym4@gmail.com',
+        pass: 'apologym1995'
+      }
+    })
   }
 }

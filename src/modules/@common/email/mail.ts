@@ -1,15 +1,15 @@
-import { ConfigMail } from './config';
-import { ResetPasswordMail } from './template';
+import { ConfigMail } from './config'
+import { ResetPasswordMail } from './template'
 
 export class Mail {
-  config: ConfigMail;
-  email: string;
-  company: string;
+  config: ConfigMail
+  email: string
+  company: string
 
   constructor() {
-    this.config = new ConfigMail();
-    this.company = 'Apolo Gym';
-    this.email = 'Apologym4@gmail.com';
+    this.config = new ConfigMail()
+    this.company = 'Apolo Gym'
+    this.email = 'Apologym4@gmail.com'
   }
 
   public async SendMultipleEMail(dest: string[], sub: string, txt: string) {
@@ -17,10 +17,10 @@ export class Mail {
       from: `"${this.company} 👻" <${this.email}>`,
       to: dest,
       subject: `${sub} ✔`,
-      text: txt,
-    });
-    console.log(`Message sent: ${info.messageId}`);
-    return info.messageId ? true : false;
+      text: txt
+    })
+    console.log(`Message sent: ${info.messageId}`)
+    return info.messageId ? true : false
   }
 
   public async SendMultipleEMailHtml(
@@ -28,16 +28,16 @@ export class Mail {
     sub: string,
     url: string,
     user: string,
-    host: string,
+    host: string
   ) {
     const info = await this.config.GetConfig().sendMail({
       from: `"${this.company} 👻" <${this.email}>`,
       to: dest,
       subject: `${sub} ✔`,
-      html: ResetPasswordMail(url, this.company, this.email, user, host),
-    });
-    console.log(`Message sent: ${info.messageId}`);
-    return info.messageId ? true : false;
+      html: ResetPasswordMail(url, this.company, this.email, user, host)
+    })
+    console.log(`Message sent: ${info.messageId}`)
+    return info.messageId ? true : false
   }
 
   public async SendSingleEMail(dest: string, sub: string, txt: string) {
@@ -45,10 +45,10 @@ export class Mail {
       from: `"${this.company} 👻" <${this.email}>`,
       to: dest,
       subject: `${sub} ✔`,
-      text: txt,
-    });
-    console.log(`Message sent: ${info.messageId}`);
-    return info.messageId ? true : false;
+      text: txt
+    })
+    console.log(`Message sent: ${info.messageId}`)
+    return info.messageId ? true : false
   }
 
   public async SendSingleEMailHtml(
@@ -56,16 +56,16 @@ export class Mail {
     sub: string,
     url: string,
     user: string,
-    host: string,
+    host: string
   ) {
     const info = await this.config.GetConfig().sendMail({
       from: `"${this.company} 👻" <${this.email}>`,
       to: dest,
       subject: `${sub} ✔`,
-      html: ResetPasswordMail(url, this.company, this.email, user, host),
-    });
-    console.log(`Message sent: ${info.messageId}`);
-    return info.messageId ? true : false;
+      html: ResetPasswordMail(url, this.company, this.email, user, host)
+    })
+    console.log(`Message sent: ${info.messageId}`)
+    return info.messageId ? true : false
   }
 }
 //https://myaccount.google.com/lesssecureapps
