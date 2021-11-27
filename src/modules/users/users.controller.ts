@@ -8,15 +8,15 @@ import {
   HttpException,
   Put,
   ParseIntPipe,
-  Request,
-} from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
+  Request
+} from '@nestjs/common'
+import { JwtService } from '@nestjs/jwt'
 
-import { PersonDto } from './dto/person.dto';
-import { UpdatePersonDto } from './dto/updateperson.dto';
-import { CreateService } from './services/create.service';
-import { FindService } from './services/find.service';
-import { UpdateService } from './services/update.service';
+import { PersonDto } from './dto/person.dto'
+import { UpdatePersonDto } from './dto/updateperson.dto'
+import { CreateService } from './services/create.service'
+import { FindService } from './services/find.service'
+import { UpdateService } from './services/update.service'
 
 @Controller('users')
 export class UsersController {
@@ -24,83 +24,81 @@ export class UsersController {
     private readonly createService: CreateService,
     private readonly findService: FindService,
     private readonly updateService: UpdateService,
-    private readonly jwt: JwtService,
+    private readonly jwt: JwtService
   ) {}
 
   @Get('find-:identification')
   public async ListCLientsId(
-    @Param('identification', ParseIntPipe) identification: number,
+    @Param('identification', ParseIntPipe) identification: number
   ) {
     if (!identification || identification < 0) {
-      throw new HttpException('Bad_Request', HttpStatus.BAD_REQUEST);
+      throw new HttpException('Bad_Request', HttpStatus.BAD_REQUEST)
     }
-    const res: any = await this.findService.findByIdentification(
-      identification,
-    );
+    const res: any = await this.findService.findByIdentification(identification)
     return res.error
       ? { ...res, status: HttpStatus.NO_CONTENT }
-      : { payload: res, success: 'ok' };
+      : { payload: res, success: 'ok' }
   }
 
   //ingreso gym
   @Get('find-entry-:identification')
   public async ListCLientsIdIn(
-    @Param('identification', ParseIntPipe) identification: number,
+    @Param('identification', ParseIntPipe) identification: number
   ) {
-    if (!identification || identification < 0) {
-      throw new HttpException('Bad_Request', HttpStatus.BAD_REQUEST);
-    }
+    if (!identification || identification < 0)
+      throw new HttpException('Bad_Request', HttpStatus.BAD_REQUEST)
+
     const res: any = await this.findService.findByIdentificationEntry(
-      identification,
-    );
+      identification
+    )
     return res.error
       ? { ...res, status: HttpStatus.NO_CONTENT }
-      : { payload: res, success: 'ok' };
+      : { payload: res, success: 'ok' }
   }
 
   @Get('find/:role')
   public async ListCLientsRole(@Param('role') role: string) {
     if (!role || role.length < 0) {
-      throw new HttpException('Bad_Request', HttpStatus.BAD_REQUEST);
+      throw new HttpException('Bad_Request', HttpStatus.BAD_REQUEST)
     }
-    const res: any = await this.findService.findByRoles(role);
+    const res: any = await this.findService.findByRoles(role)
     return res.error
       ? { ...res, status: HttpStatus.NO_CONTENT }
-      : { payload: res, success: 'ok' };
+      : { payload: res, success: 'ok' }
   }
 
   @Post('create')
   public async CreateClient(@Body() newClient: PersonDto, @Request() req) {
     const user: any = this.jwt.decode(
-      req.headers['authorization'].split(' ')[1],
-    );
+      req.headers['authorization'].split(' ')[1]
+    )
 
     const res = await this.createService.CreateNewClient(
       newClient,
-      user.res.username,
-    );
+      user.res.username
+    )
     return res?.error
       ? { ...res, status: HttpStatus.CONFLICT }
-      : { ...res, detail: 'Successful signup' };
+      : { ...res, detail: 'Successful signup' }
   }
 
   @Put('update')
   public async UpdatePerson(
     @Body() newPerson: UpdatePersonDto,
-    @Request() req,
+    @Request() req
   ) {
     const user: any = this.jwt.decode(
-      req.headers['authorization'].split(' ')[1],
-    );
+      req.headers['authorization'].split(' ')[1]
+    )
 
     const res = await this.updateService.UpdatePerson(
       newPerson,
       user.res.username,
-      req.body.oldId,
-    );
+      req.body.oldId
+    )
 
     return res.error
       ? { ...res, status: HttpStatus.NO_CONTENT }
-      : { ...res, detail: 'Actualización Correcta' };
+      : { ...res, detail: 'Actualización Correcta' }
   }
 }
