@@ -1,7 +1,7 @@
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm'
+import { Repository } from 'typeorm'
 
-import { User } from '../../../entities/users/user.entity';
+import { User } from '../../../entities/users/user.entity'
 
 const USERS = [
   {
@@ -10,25 +10,25 @@ const USERS = [
     password: '451504911110010510811711296495150491111001051081171124',
     key: '9872c96a-7b13-4bf9-88cd-5965f3df61f7',
     mail: 'lucho9515baco@gmail.com',
-    people: '7c556aca-72ba-4d3d-8f0e-dd57ff0869ef',
-  },
-];
+    people: '7c556aca-72ba-4d3d-8f0e-dd57ff0869ef'
+  }
+]
 export class UserDefault {
   constructor(
     @InjectRepository(User)
-    private readonly userRepository: Repository<User>,
+    private readonly userRepository: Repository<User>
   ) {
-    USERS.map(user => this.createDefault(user));
+    USERS.map(user => this.createDefault(user))
   }
 
   public async createDefault(object) {
     const isExists = await this.userRepository.findOne({
-      where: { key: object.key, id: object.id },
-    });
-    if (isExists) return;
+      where: { key: object.key, id: object.id }
+    })
+    if (isExists) return
 
-    const _new = this.userRepository.create(object);
+    const _new = this.userRepository.create(object)
 
-    return await this.userRepository.save(_new);
+    return await this.userRepository.save(_new)
   }
 }
