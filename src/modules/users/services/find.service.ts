@@ -72,7 +72,8 @@ export class FindService {
     if (res[0].concept === Concept.Tiq && res[0].time > 0) {
       const userDate = new Date(`${res[0].upd}`).toISOString().slice(0, 10),
         currentDate = new Date().toISOString().slice(0, 10)
-
+      console.log(userDate)
+      console.log(currentDate)
       if (userDate < currentDate) {
         const idPeople = await this.peopleRepository.findOne({
           where: { identification: res[0].identification }
