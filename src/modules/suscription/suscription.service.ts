@@ -63,7 +63,7 @@ export class PaymentsService {
           VALUES
             (
               '${insertId}',
-              ${pay.cost - pay.days},
+              ${pay.cost - pay.debt},
               ${pay.days},
               ${pay.debt},
               CURRENT_DATE(),
